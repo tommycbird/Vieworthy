@@ -4,6 +4,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="src/css/style.css">
     <link href="https://fonts.cdnfonts.com/css/open-sauce-one" rel="stylesheet">
+    <script src="src/js/app.js" defer></script>
     <style>
         @import url('https://fonts.cdnfonts.com/css/open-sauce-one');
     </style>
@@ -25,11 +26,20 @@
     <div class="main">
         <div class="form-group">
             <textarea class="form" placeholder="Video URL..."></textarea>
-            <button onclick="alert('Summarize button clicked')" class="summarize-button">
+            <button onclick="getVideoTitle()" class="summarize-button">
                 Summarize
             </button>
         </div>
     </div>
+
+    <!-- The Modal -->
+    <div  class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <p id="videoTitle"></p>
+        </div>
+    </div>
+  
 
 </body>
 
