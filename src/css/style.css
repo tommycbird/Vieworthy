@@ -1,44 +1,79 @@
-body, p, .logo {
-  background-color: black;
+/* ========================================================
+  GENERAL STYLING AND VARIABLES
+======================================================== */
+
+
+:root {
+  --darkergray: rgb(24, 24, 24);
+}
+
+body{
+  background: linear-gradient(to right,
+  black 33.33%,
+  var(--darkergray) 33.33% 66.66%,
+  var(--darkergray) 66.66%
+  );
   color: white;
-  font-family: Arial, sans-serif;
+}
+
+p {
+  font-size: 18px;
+  line-height: 1.5;
+  font-family: 'Courier New', Courier, monospace;
+  font-style: italic;
+}
+
+
+/* ========================================================
+  HEADER
+======================================================== */
+
+.logo-img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.logo {
+  font-size: 30px;
+  font-weight: bold;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 20px 40px;
+}
+
+.top-left {
+  display: flex;
+  align-items: center;
 }
 
 .logo {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
 }
 
-.main-content {
+.top-right {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: calc(100vh - 60px);  
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-}
-
-.text-input {
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid white;
-  background-color: black;
+.about-us {
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
   color: white;
+  background-color: transparent;
+  background: none;
+  font-family: 'Open Sauce One', sans-serif;
+  font-weight: 300;
 }
 
-.summarize-button {
+button {
   border: none;
   padding: 10px 15px;
   cursor: pointer;
@@ -47,6 +82,59 @@ body, p, .logo {
   border-radius: 5px;
 }
 
+.about-us:hover {
+  color: lightgray;
+}
+
+.ghub-img {
+  width: 30px;
+  height: 30px;
+}
+
+/* ========================================================
+  FORM INPUT
+======================================================== */
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+  
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+}
+
+.form {
+  padding: 10px;
+  margin-bottom:20px;
+  border: 1px solid white;
+  background-color: black;
+  color: white;
+  resize: none;
+  height: 20px;
+  width: 400px;
+}
+
+.summarize-button {
+  padding: 10px;
+  cursor: pointer;
+  border: 1px solid white;
+  background-color: var(--darkergray);
+  color: white;
+  font-weight: bold;
+  border-radius: 0px;
+  width: 150px;
+}
+
 .description {
   margin-bottom: 10px;
 }
+
+/* ========================================================
+  FOOTER
+======================================================== */
