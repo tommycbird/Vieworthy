@@ -49,24 +49,9 @@ function extractVideoID(url) {
 
 
 
-function showpopup() {
-    var popup = document.getElementsByClassName("popup")[0];
-    var span = document.getElementsByClassName("close")[0];
 
-    popup.style.display = "block";
 
-    span.onclick = function() {
-        popup.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == popup) {
-            popup.style.display = "none";
-        }
-    }
-}
-
-// SUPPLEMENTAL FUNCTIONS
+// SUPPLEMENTAL FUNCTIONS EXECUTED BY DRIVER() ========================================
 
 function validURL(url) {
     /* 
@@ -75,6 +60,7 @@ function validURL(url) {
     */
 
 }
+
 
 function getVideoDetails(url) {
     /*
@@ -90,6 +76,36 @@ function getVideoDetails(url) {
     details['dislikes'] = getDislikes(url)
 
     return details
+}
+
+function parse(details) {
+
+}
+
+function summarize(input) {
+
+}
+
+function format(output) {
+
+}
+
+
+function display() {
+    var popup = document.getElementsByClassName("popup")[0];
+    var span = document.getElementsByClassName("close")[0];
+
+    popup.style.display = "block";
+
+    span.onclick = function() {
+        popup.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == popup) {
+            popup.style.display = "none";
+        }
+    }
 }
 
 // DRIVER FUNCTION ========================================
