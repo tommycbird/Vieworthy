@@ -1,3 +1,5 @@
+
+
 function getVideoTitle() {
     // Assuming your textarea has a class of "form"
     let videoURL = document.querySelector(".form").value;
@@ -34,12 +36,16 @@ function getVideoTitle() {
         });
 }
 
+
+
 function extractVideoID(url) {
     // Regular expression to extract video ID from a YouTube URL
     const regex = /(?:v=)([a-zA-Z0-9_-]{11})/;
     const result = url.match(regex);
     return result ? result[1] : null;
 }
+
+
 
 
 
@@ -60,4 +66,66 @@ function showpopup() {
     }
 }
 
+// SUPPLEMENTAL FUNCTIONS
+
+function validURL(url) {
+    /* 
+    Takes in URL, then verifies that it is a valid YouTube URL, 
+    the video exists, and the transcript exists
+    */
+
+}
+
+function getVideoDetails(url) {
+    /*
+    Takes in URL, then returns a dictionary of the video details
+    */
+    var details = {}
+
+    details['title'] = getTitle(url)
+    details['transcript'] = getTranscript(url)
+    details['comments'] = getComments(url)
+    details['description'] = getDescription(url)
+    details['likes'] = getLikes(url)
+    details['dislikes'] = getDislikes(url)
+
+    return details
+}
+
+// DRIVER FUNCTION ========================================
+
+function compute(url) {
+    /*
+    This function takes the URL as an input, then displays the video title and the summary.
+    */
+    if(!validURL(url)){
+        console.log("Invalid URL input");
+        return;
+    }
+    // Scrape all video details
+    var details = getVideoDetails(url);
+    // Parse video details into a string usable by an LLM
+    var input = parse(details)
+    // Put input into LLM
+    var output = summarize(input)
+    // Format ouput from LLM into readable text for a pop-up
+    var formatted = format(output)
+    // Display formatted output
+    display(formatted)
+}
+
+
+
+// EVENT LISTENERS ========================================
+
+// Submit clicked
 document.querySelector('.summarize-button').addEventListener('click', getVideoTitle);
+
+// Enter pressed
+const textarea = document.querySelector('.form');
+textarea.addEventListener('keydown', function(e) {
+  if (e.keyCode === 13) {
+    e.preventDefault();  
+    getVideoTitle();
+  }
+});
