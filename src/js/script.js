@@ -1,16 +1,13 @@
 
 
-function getVideoTitle() {
-    // Assuming your textarea has a class of "form"
-    let videoURL = document.querySelector(".form").value;
-
+function getTitle(url) {
     // If user input is "test", use the default link
-    if (videoURL.trim().toLowerCase() === "test") {
-        videoURL = "https://www.youtube.com/watch?v=enR58PYHaWw";
+    if (url.trim().toLowerCase() === "test") {
+        url = "https://www.youtube.com/watch?v=enR58PYHaWw";
     }
 
     // Extract the video ID from the URL
-    const videoID = extractVideoID(videoURL);
+    const videoID = extractVideoID(url);
 
     if (!videoID) {
         console.error("Invalid YouTube URL");
@@ -25,8 +22,7 @@ function getVideoTitle() {
         .then(data => {
             if (data.items.length > 0) {
                 const videoTitle = data.items[0].snippet.title;
-                document.getElementById('videoTitle').innerText = videoTitle; // Set the video title
-                showpopup(); // Show the popup
+                return videoTitle;
             } else {
                 console.log('Video not found.');
             }
@@ -36,6 +32,25 @@ function getVideoTitle() {
         });
 }
 
+function getTranscript(url) {
+    return "This is a transcript";
+}
+
+function getComments(url) {
+    return "These are comments";
+}
+
+function getDescription(url) {
+    return "This is a description";
+}
+
+function getLikes(url) {
+    return "These are likes";
+}
+
+function getDislikes(url) {
+    return "These are dislikes";
+}
 
 
 function extractVideoID(url) {
@@ -47,10 +62,6 @@ function extractVideoID(url) {
 
 
 
-
-
-
-
 // SUPPLEMENTAL FUNCTIONS EXECUTED BY DRIVER() ========================================
 
 function validURL(url) {
@@ -58,7 +69,7 @@ function validURL(url) {
     Takes in URL, then verifies that it is a valid YouTube URL, 
     the video exists, and the transcript exists
     */
-
+    return true;
 }
 
 
@@ -66,6 +77,7 @@ function getVideoDetails(url) {
     /*
     Takes in URL, then returns a dictionary of the video details
     */
+   
     var details = {}
 
     details['title'] = getTitle(url)
@@ -79,27 +91,31 @@ function getVideoDetails(url) {
 }
 
 function parse(details) {
-
+    return details['title'];
 }
 
 function summarize(input) {
-
+    return input;
 }
 
 function format(output) {
-
+    return output;
 }
 
 
-function display() {
+function display(summary) {
     var popup = document.getElementsByClassName("popup")[0];
     var span = document.getElementsByClassName("close")[0];
+
+    // Set summary
+    document.getElementById('summary').innerText = summary;
 
     popup.style.display = "block";
 
     span.onclick = function() {
         popup.style.display = "none";
     }
+    
 
     window.onclick = function(event) {
         if (event.target == popup) {
@@ -110,14 +126,17 @@ function display() {
 
 // DRIVER FUNCTION ========================================
 
-function compute(url) {
+function compute() {
     /*
     This function takes the URL as an input, then displays the video title and the summary.
     */
+    var url = document.querySelector(".form").value;
+
     if(!validURL(url)){
         console.log("Invalid URL input");
         return;
     }
+
     // Scrape all video details
     var details = getVideoDetails(url);
     // Parse video details into a string usable by an LLM
@@ -126,6 +145,7 @@ function compute(url) {
     var output = summarize(input)
     // Format ouput from LLM into readable text for a pop-up
     var formatted = format(output)
+
     // Display formatted output
     display(formatted)
 }
@@ -135,13 +155,13 @@ function compute(url) {
 // EVENT LISTENERS ========================================
 
 // Submit clicked
-document.querySelector('.summarize-button').addEventListener('click', getVideoTitle);
+document.querySelector('.summarize-button').addEventListener('click', compute());
 
 // Enter pressed
 const textarea = document.querySelector('.form');
 textarea.addEventListener('keydown', function(e) {
   if (e.keyCode === 13) {
     e.preventDefault();  
-    getVideoTitle();
+    compute();
   }
 });
