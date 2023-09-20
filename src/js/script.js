@@ -1,9 +1,10 @@
 
 
 function getTitle(url) {
+    // Assuming your textarea has a class of "form"
     // If user input is "test", use the default link
     if (url.trim().toLowerCase() === "test") {
-        url = "https://www.youtube.com/watch?v=enR58PYHaWw";
+       url = "https://www.youtube.com/watch?v=enR58PYHaWw";
     }
 
     // Extract the video ID from the URL
@@ -22,7 +23,7 @@ function getTitle(url) {
         .then(data => {
             if (data.items.length > 0) {
                 const videoTitle = data.items[0].snippet.title;
-                return videoTitle;
+                document.getElementById('summary').innerText = videoTitle; // Set the video title
             } else {
                 console.log('Video not found.');
             }
@@ -87,6 +88,7 @@ function getVideoDetails(url) {
     details['likes'] = getLikes(url)
     details['dislikes'] = getDislikes(url)
 
+    console.log(details)
     return details
 }
 
@@ -132,6 +134,7 @@ function compute() {
     */
     var url = document.querySelector(".form").value;
 
+    console.log(url);
     if(!validURL(url)){
         console.log("Invalid URL input");
         return;
@@ -154,8 +157,7 @@ function compute() {
 
 // EVENT LISTENERS ========================================
 
-// Submit clicked
-document.querySelector('.summarize-button').addEventListener('click', compute());
+
 
 // Enter pressed
 const textarea = document.querySelector('.form');
