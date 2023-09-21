@@ -1,12 +1,7 @@
 
 
-function getTitle(url) {
-    // Assuming your textarea has a class of "form"
-    // If user input is "test", use the default link
-    if (url.trim().toLowerCase() === "test") {
-       url = "https://www.youtube.com/watch?v=enR58PYHaWw";
-    }
-
+//CODE TO FETCH VIDEO DATA FROM YOUTUBE API
+function fetchVideoData(url) {
     // Extract the video ID from the URL
     const videoID = extractVideoID(url);
 
@@ -14,46 +9,48 @@ function getTitle(url) {
         console.error("Invalid YouTube URL");
         return;
     }
-
     const API_KEY = "AIzaSyCe3jBxqhacGmezpofd5olN3Cv5Qmjy_mE";
-    const apiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoID}&key=${API_KEY}&part=snippet`;
+    const apiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoID}&key=${API_KEY}&part=snippet,statistics`;
+    return new Promise((resolve, reject) => {
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data.items && data.items.length > 0) {
+                    const snippet = data.items[0].snippet;
+                    const statistics = data.items[0].statistics;
+                    
+                    // Access various data points
+                    const details = {
+                        title: snippet.title,
+                        description: snippet.description,
+                        likes: statistics.likeCount,
+                    };
+                    // Update the UI elements individually
+                    document.getElementById('title').innerText = details.title;
+                    document.getElementById('description').innerText = details.description;
+                    document.getElementById('likes').innerText = 'Likes: ' + details.likes;
 
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            if (data.items.length > 0) {
-                const videoTitle = data.items[0].snippet.title;
-                document.getElementById('summary').innerText = videoTitle; // Set the video title
-            } else {
-                console.log('Video not found.');
-            }
-        })
-        .catch(error => {
-            console.error("Failed to fetch video title:", error);
-        });
+                    // Display the popup once the data is fetched
+                    displayPopup();
+
+                    resolve(details);
+                } else {
+                    console.log('Video not found.');
+                    reject('Video not found.');
+                }
+            })
+            .catch(error => {
+                console.error("Failed to fetch video data:", error);
+                reject(error);
+            });
+    });
 }
 
-function getTranscript(url) {
-    return "This is a transcript";
-}
-
-function getComments(url) {
-    return "These are comments";
-}
-
-function getDescription(url) {
-    return "This is a description";
-}
-
-function getLikes(url) {
-    return "These are likes";
-}
-
-function getDislikes(url) {
-    return "These are dislikes";
-}
 
 
+// SUPPLEMENTAL FUNCTIONS EXECUTED BY DRIVER() ========================================
+
+//function also check
 function extractVideoID(url) {
     // Regular expression to extract video ID from a YouTube URL
     const regex = /(?:v=)([a-zA-Z0-9_-]{11})/;
@@ -61,64 +58,52 @@ function extractVideoID(url) {
     return result ? result[1] : null;
 }
 
+// //function to get transcription using selenium
+// function getTranscription(url) {
+//     fetch('http://localhost:3000/getTranscription', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ url })
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log('Transcription:', data.transcription);
+//         // Update the UI with the transcription
+//     })
+//     .catch(error => {
+//         console.error('Error getting transcription:', error);
+//     });
+// }
+// //function to get dislikes using selenium
+// function getDislikes(url) {
+//     fetch('http://localhost:3000/getDislikes', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ url })
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log('Dislikes:', data.dislikes);
+//         // Update the UI with the dislikes
+//     })
+//     .catch(error => {
+//         console.error('Error getting dislikes:', error);
+//     });
+// }
 
 
-// SUPPLEMENTAL FUNCTIONS EXECUTED BY DRIVER() ========================================
-
-function validURL(url) {
-    /* 
-    Takes in URL, then verifies that it is a valid YouTube URL, 
-    the video exists, and the transcript exists
-    */
-    return true;
-}
-
-
-function getVideoDetails(url) {
-    /*
-    Takes in URL, then returns a dictionary of the video details
-    */
-   
-    var details = {}
-
-    details['title'] = getTitle(url)
-    details['transcript'] = getTranscript(url)
-    details['comments'] = getComments(url)
-    details['description'] = getDescription(url)
-    details['likes'] = getLikes(url)
-    details['dislikes'] = getDislikes(url)
-
-    console.log(details)
-    return details
-}
-
-function parse(details) {
-    return details['title'];
-}
-
-function summarize(input) {
-    return input;
-}
-
-function format(output) {
-    return output;
-}
-
-
-function display(summary) {
+//function to display popup and video metadata (FOR TESTING PURPOSES))
+function displayPopup() {
     var popup = document.getElementsByClassName("popup")[0];
     var span = document.getElementsByClassName("close")[0];
-
-    // Set summary
-    document.getElementById('summary').innerText = summary;
-
     popup.style.display = "block";
-
     span.onclick = function() {
         popup.style.display = "none";
     }
-    
-
     window.onclick = function(event) {
         if (event.target == popup) {
             popup.style.display = "none";
@@ -127,37 +112,45 @@ function display(summary) {
 }
 
 // DRIVER FUNCTION ========================================
-
 function compute() {
-    /*
-    This function takes the URL as an input, then displays the video title and the summary.
-    */
-    var url = document.querySelector(".form").value;
+    var url = document.querySelector(".form").value.trim().toLowerCase();
 
-    console.log(url);
-    if(!validURL(url)){
+    if(url === "test") {
+        url = "https://www.youtube.com/watch?v=enR58PYHaWw"; 
+    }
+    
+    const videoID = extractVideoID(url);
+    if (!videoID) {
         console.log("Invalid URL input");
         return;
     }
+    
+    fetchVideoData(url)
+        .then(details => {
+            console.log("HERE ARE THE DETAILS", details);
 
-    // Scrape all video details
-    var details = getVideoDetails(url);
-    // Parse video details into a string usable by an LLM
-    var input = parse(details)
-    // Put input into LLM
-    var output = summarize(input)
-    // Format ouput from LLM into readable text for a pop-up
-    var formatted = format(output)
+            // // Fetch the additional data using Selenium after fetching the video data
+            // getTranscription(url).then(transcription => {
+            //     console.log("HERE IS THE TRANSCRIPTION", transcription);
+            //     details.transcription = transcription; // add transcription to details object
+                
+            //     getDislikes(url).then(dislikes => {
+            //         console.log("HERE ARE THE DISLIKES", dislikes);
+            //         details.dislikes = dislikes; // add dislikes to details object
 
-    // Display formatted output
-    display(formatted)
+            //         console.log("HERE ARE THE FINAL DETAILS", details);
+            //         // Here, you have a details object containing all the data you fetched
+            //     });
+            // });
+        })
+        .catch(error => {
+            console.error('Error fetching video data:', error);
+        });
 }
 
 
 
 // EVENT LISTENERS ========================================
-
-
 
 // Enter pressed
 const textarea = document.querySelector('.form');
