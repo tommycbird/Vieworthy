@@ -33,13 +33,8 @@ async function getTranscript(link) {
     for(let i = 0; i < transcriptElements.length; i++){
       transcript.push(await transcriptElements[i].getAttribute('aria-label'));
     }
-
-    console.log(transcript);
-  
-  
     await driver.quit();
+    
+    return transcript;
 };
-
-// const link = 'https://www.youtube.com/watch?v=JOiGEI9pQBs';
-// getTranscript(link);
 
