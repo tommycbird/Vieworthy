@@ -40,7 +40,6 @@ async function getTranscript(link) {
     await driver.quit();
 };
 
-
-const link = 'https://www.youtube.com/watch?v=JOiGEI9pQBs';
-getTranscript(link);
+// const link = 'https://www.youtube.com/watch?v=JOiGEI9pQBs';
+// getTranscript(link);
 
