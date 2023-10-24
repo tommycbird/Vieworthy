@@ -1,6 +1,4 @@
-
-
-//CODE TO FETCH VIDEO DATA FROM YOUTUBE API
+// CODE TO FETCH VIDEO DATA FROM YOUTUBE API
 function fetchVideoData(url) {
     const videoID = extractVideoID(url);
     if (!videoID) {
@@ -26,7 +24,7 @@ function fetchVideoData(url) {
                         title: snippet.title,
                         description: snippet.description,
                         likes: statistics.likeCount,
-                        comments: [] // initializing comments as an empty array
+                        comments: [] 
                     };
 
                     // Fetch comments
@@ -44,127 +42,127 @@ function fetchVideoData(url) {
                         })
                         .catch(commentError => {
                             console.error("Failed to fetch comments:", commentError);
-                            resolve(details); // Resolve the promise even if fetching comments fails
+                            resolve(details);  // Still resolve the promise even if comments fail to fetch
                         });
                 } else {
-                    console.log('Video not found.');
-                    reject('Video not found.');
+                    reject("Failed to fetch video details");
                 }
             })
             .catch(error => {
-                console.error("Failed to fetch video data:", error);
+                console.error("Failed to fetch video details:", error);
                 reject(error);
             });
     });
 }
 
-
-
-
-// SUPPLEMENTAL FUNCTIONS EXECUTED BY DRIVER() ========================================
-
-//function also check
-function extractVideoID(url) {
-    // Regular expression to extract video ID from a YouTube URL
-    const regex = /(?:v=)([a-zA-Z0-9_-]{11})/;
-    const result = url.match(regex);
-    return result ? result[1] : null;
-}
-
-// //function to get transcription using selenium
-// function getTranscription(url) {
-//     fetch('http://localhost:3000/getTranscription', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ url })
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log('Transcription:', data.transcription);
-//         // Update the UI with the transcription
-//     })
-//     .catch(error => {
-//         console.error('Error getting transcription:', error);
-//     });
-// }
-// //function to get dislikes using selenium
-// function getDislikes(url) {
-//     fetch('http://localhost:3000/getDislikes', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ url })
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log('Dislikes:', data.dislikes);
-//         // Update the UI with the dislikes
-//     })
-//     .catch(error => {
-//         console.error('Error getting dislikes:', error);
-//     });
-// }
-
-
-//function to display popup and video metadata (FOR TESTING PURPOSES))
 function displayPopup() {
-    var popup = document.getElementsByClassName("popup")[0];
-    var span = document.getElementsByClassName("close")[0];
-    popup.style.display = "block";
-    span.onclick = function() {
-        popup.style.display = "none";
-    }
-    window.onclick = function(event) {
-        if (event.target == popup) {
-            popup.style.display = "none";
-        }
+    const popupElement = document.querySelector('.popup');
+    if (popupElement) {
+        popupElement.style.display = 'block'; 
     }
 }
 
-// DRIVER FUNCTION ========================================
+function closePopup() {
+    document.querySelector('.popup').style.display = 'none';
+}
+
 function compute() {
-    var url = document.querySelector(".form").value.trim().toLowerCase();
-
-    if(url === "test") {
-        url = "https://www.youtube.com/watch?v=enR58PYHaWw"; 
-    }
+    displayPopup();
+    const urlInput = document.getElementById('url');
+    const url = urlInput.value;
     
-    const videoID = extractVideoID(url);
-    if (!videoID) {
-        console.log("Invalid URL input");
-        return;
-    }
-    
-    fetchVideoData(url)
-        .then(details => {
-            console.log("HERE ARE THE DETAILS", details);
-
-            document.getElementById('title').innerText = details.title;
-            document.getElementById('description').innerText = details.description;
-            document.getElementById('likes').innerText = details.likes;
-            
-            let commentsDiv = document.getElementById('comments');
-            if (details.comments && details.comments.length > 0) {
-                let commentList = '<ul style="max-height:200px; overflow-y:scroll;">';
-                details.comments.forEach(comment => {
-                    commentList += '<li>' + comment + '</li>';
-                });
-                commentList += '</ul>';
-                commentsDiv.innerHTML = commentList;
-            }
-
-            // Display the popup
-            displayPopup();
+    if (url === "test") {
+        fetch('http://localhost:3000/askGPT', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ prompt: "I am going to pass in text data about a given youtube video and I will ask you questions from the data" }) 
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('GPT Response:', data.answer);  
         })
         .catch(error => {
-            console.error('Error fetching video data:', error);
+            console.error('Error getting response from GPT:', error);
         });
+        urlInput.value = '';
+
+        return; 
+    }
+    
+    else{
+        const videoID = extractVideoID(url);
+        if (!videoID) {
+            console.log("Invalid URL input");
+            return;
+        }
+        fetchVideoData(url)
+            .then(details => {
+                console.log("HERE ARE THE DETAILS", details);
+                document.querySelector(".loading-status p").innerText = "Response Grabbed Successfully";
+                document.querySelector(".loader").style.display = "none";
+                document.getElementById('description').innerText = details.description;
+                document.getElementById('likes').innerText = details.likes;
+                
+                let commentsDiv = document.getElementById('comments');
+                if (details.comments && details.comments.length > 0) {
+                    let commentList = '<ul style="max-height:200px; overflow-y:scroll;">';
+                    details.comments.forEach(comment => {
+                        commentList += '<li>' + comment + '</li>';
+                    });
+                    commentList += '</ul>';
+                    commentsDiv.innerHTML = commentList;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching video data:', error);
+            });
+    }
+    
 }
 
 
+function handleChatSubmit() {
+    const chatInput = document.querySelector(".input-container textarea");
+    const userInput = chatInput.value;
+    if (userInput.trim() === "") return;  
+
+    // Clear the chat input as soon as the submit button is clicked
+    chatInput.value = ''; 
+    console.log("Chat input cleared.");
+
+    addMessageToChat('user', userInput);
+
+    // Send the userInput to server for processing by GPT
+    fetch('http://localhost:3000/askGPT', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ prompt: userInput }) 
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('GPT CHAT Response:', data.answer);
+        addMessageToChat('gpt', data.answer);
+    })
+    .catch(error => {
+        console.error('Error getting response from GPT:', error);
+    });
+}
+
+
+function addMessageToChat(role, content) {
+    const chatContainer = document.querySelector('.chat-container');
+    const message = document.createElement('div');
+    message.className = `message ${role}-message`;
+    message.innerText = content;
+    chatContainer.appendChild(message);
+    chatContainer.scrollTop = chatContainer.scrollHeight; 
+}
+
+document.querySelector('.input-container button').addEventListener('click', handleChatSubmit);
 
 
 // EVENT LISTENERS ========================================
@@ -172,8 +170,8 @@ function compute() {
 // Enter pressed
 const textarea = document.querySelector('.form');
 textarea.addEventListener('keydown', function(e) {
-  if (e.keyCode === 13) {
-    e.preventDefault();  
-    compute();
-  }
+    if (e.keyCode === 13) {
+        e.preventDefault();  
+        compute();
+    }
 });
