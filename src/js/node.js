@@ -1,16 +1,14 @@
-//OpenAI API key (pls dont steal)
-process.env.OPENAI_API_KEY = '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';
 
-//variables for Selenium
 const express = require('express');
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const OpenAIApi = require('openai');
-
 const app = express();
 const port = 3000;
 
+//API Key for OpenAI
+process.env.OPENAI_API_KEY = 'aaaaaaaaaa';
 const openai = new OpenAIApi({ key: process.env.OPENAI_API_KEY });
 
 //Hardcoded transcript for testing GPT
@@ -265,14 +263,19 @@ timestamps_and_text = {
     // "9:58": "to switch between muted or ringer on, great.",
 }
 
+//Formatting for the input prompt which carries all the metadata
 const prompt_text = `Likes: 1000 || Title: Sample Title || Description: Sample Description || Transcript: ${Object.values(timestamps_and_text).join(" ")}`;
 
-// Middlewares
+// Middleware variables
 app.use(bodyParser.json());
 app.use(cors());
 
+//List to save the conversation history into
 let conversationHistory = [];
 
+//======================================================================================================================================================
+
+//Method to query the openAI API
 app.post('/askGPT', async (req, res) => {
     try {
         console.log("Received request for /askGPT:", req.body);
@@ -319,6 +322,7 @@ app.post('/askGPT', async (req, res) => {
     }
 });
 
+//======================================================================================================================================================
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);

@@ -1,4 +1,5 @@
-// CODE TO FETCH VIDEO DATA FROM YOUTUBE API
+
+// Fetches title, description, likes and comments using YouTube API
 function fetchVideoData(url) {
     const videoID = extractVideoID(url);
     if (!videoID) {
@@ -42,7 +43,7 @@ function fetchVideoData(url) {
                         })
                         .catch(commentError => {
                             console.error("Failed to fetch comments:", commentError);
-                            resolve(details);  // Still resolve the promise even if comments fail to fetch
+                            resolve(details);  
                         });
                 } else {
                     reject("Failed to fetch video details");
@@ -55,6 +56,9 @@ function fetchVideoData(url) {
     });
 }
 
+//======================================================================================================================================================
+
+//Shows the popup
 function displayPopup() {
     const popupElement = document.querySelector('.popup');
     if (popupElement) {
@@ -62,15 +66,22 @@ function displayPopup() {
     }
 }
 
+//======================================================================================================================================================
+
+//Closes the popup
 function closePopup() {
     document.querySelector('.popup').style.display = 'none';
 }
 
+//======================================================================================================================================================
+
+//Current driver function  for OpenAI API
 function compute() {
     displayPopup();
     const urlInput = document.getElementById('url');
     const url = urlInput.value;
     
+    //for testing purposes
     if (url === "test") {
         fetch('http://localhost:3000/askGPT', {
             method: 'POST',
@@ -86,11 +97,12 @@ function compute() {
         .catch(error => {
             console.error('Error getting response from GPT:', error);
         });
+        //reset the input field
         urlInput.value = '';
-
         return; 
     }
     
+    //Actual method when we are ready to use the API with real URL's
     else{
         const videoID = extractVideoID(url);
         if (!videoID) {
@@ -122,16 +134,19 @@ function compute() {
     
 }
 
+//======================================================================================================================================================
 
+//This function handles the "chat" with the GPT API
 function handleChatSubmit() {
     const chatInput = document.querySelector(".input-container textarea");
     const userInput = chatInput.value;
     if (userInput.trim() === "") return;  
 
-    // Clear the chat input as soon as the submit button is clicked
+    // Clear text input as soon as the submit button is clicked
     chatInput.value = ''; 
     console.log("Chat input cleared.");
 
+    // Add user input to "chat" window
     addMessageToChat('user', userInput);
 
     // Send the userInput to server for processing by GPT
@@ -145,6 +160,7 @@ function handleChatSubmit() {
     .then(response => response.json())
     .then(data => {
         console.log('GPT CHAT Response:', data.answer);
+        //add GPT response to "chat" window
         addMessageToChat('gpt', data.answer);
     })
     .catch(error => {
@@ -152,7 +168,9 @@ function handleChatSubmit() {
     });
 }
 
+//======================================================================================================================================================
 
+//Shows the specified message "chat" on the correct side w/ correct color
 function addMessageToChat(role, content) {
     const chatContainer = document.querySelector('.chat-container');
     const message = document.createElement('div');
@@ -164,10 +182,8 @@ function addMessageToChat(role, content) {
 
 document.querySelector('.input-container button').addEventListener('click', handleChatSubmit);
 
-
-// EVENT LISTENERS ========================================
-
-// Enter pressed
+// EVENT LISTENERS ======================================================================================================================================
+// Enter button pressed
 const textarea = document.querySelector('.form');
 textarea.addEventListener('keydown', function(e) {
     if (e.keyCode === 13) {
