@@ -1,5 +1,5 @@
 //OpenAI API key (pls dont steal)
-process.env.OPENAI_API_KEY = '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';
+process.env.OPENAI_API_KEY = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa69';
 
 //variables for Selenium
 const express = require('express');
