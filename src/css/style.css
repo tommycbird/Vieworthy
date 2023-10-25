@@ -142,7 +142,7 @@ button {
   display: none;
   position: fixed;
   width: 70%;
-  height: 50%;
+  height: 60%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -188,6 +188,10 @@ button {
   padding: 10px;
   border-radius: 5px;
   background-color: #f9f9f9;
+  overflow-y: auto;
+  height: 70%; 
+  display: flex;
+  flex-direction: column;
 }
 
 .loading-status {
@@ -211,10 +215,34 @@ button {
   100% { transform: rotate(360deg); }
 }
 
-.chat-container {
-  overflow-y: auto;
-  flex-grow: 1;
-  margin: 10px 0;
+.message {
+  padding: 5px;
+  border-radius: 5px;
+  margin: 5px 0;
+  max-width: 70%;
+  word-wrap: break-word;
+  display: flex;
+  align-items: center;
+}
+
+.message-logo {
+  height: 30px;
+  width: 30px;
+  margin-right: 5px;
+  align-self: center;
+}
+
+.message-container {
+  display: flex;
+  align-items: center;
+}
+
+.user-message-container {
+  justify-content: flex-end;
+}
+
+.gpt-message-container {
+  justify-content: flex-start;
 }
 
 .message {
@@ -224,16 +252,16 @@ button {
   max-width: 70%;
 }
 
-.user-message {
-  background-color: #3498db;
-  color: white;
-  align-self: flex-end;
-}
-
 .gpt-message {
-  background-color: #f3f3f3;
+  background-color: #e0e0e0; 
   color: black;
 }
+
+.user-message {
+  background-color: #3498db; 
+  color: white;
+}
+
 
 .input-container {
   display: flex;
@@ -243,9 +271,11 @@ button {
 
 .input-container textarea {
   width: 80%;
+  font-size: medium;
   padding: 5px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  margin-left: 5%;
   resize: none;
 }
 
@@ -256,30 +286,15 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-right: 5%;
 }
 
 .input-container button:hover {
   background-color: #0056b3;
 }
 
-.message {
-  padding: 5px;
-  border-radius: 5px;
-  margin: 5px 0;
-  max-width: 70%;
-  word-wrap: break-word;
-}
 
-.gpt-message {
-  align-self: flex-start;
-  background-color: #e0e0e0;
-}
 
-.user-message {
-  align-self: flex-end;
-  background-color: #007BFF;
-  color: #FFFFFF;
-}
 
 
 

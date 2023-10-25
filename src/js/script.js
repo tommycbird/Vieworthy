@@ -173,12 +173,27 @@ function handleChatSubmit() {
 //Shows the specified message "chat" on the correct side w/ correct color
 function addMessageToChat(role, content) {
     const chatContainer = document.querySelector('.chat-container');
+    
+    const messageContainer = document.createElement('div');
+    messageContainer.className = `message-container ${role}-message-container`;
+    
+    if (role === 'gpt') {
+        const logo = document.createElement('img');
+        logo.src = "src/img/logo.png"; // path to your logo
+        logo.className = "message-logo";
+        messageContainer.appendChild(logo);
+    }
+
     const message = document.createElement('div');
     message.className = `message ${role}-message`;
     message.innerText = content;
-    chatContainer.appendChild(message);
+    messageContainer.appendChild(message);
+    
+    chatContainer.appendChild(messageContainer);
     chatContainer.scrollTop = chatContainer.scrollHeight; 
 }
+
+
 
 document.querySelector('.input-container button').addEventListener('click', handleChatSubmit);
 
