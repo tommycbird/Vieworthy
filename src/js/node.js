@@ -8,7 +8,7 @@ const app = express();
 const port = 3000;
 
 //API Key for OpenAI
-process.env.OPENAI_API_KEY = 'aaaaaa';
+process.env.OPENAI_API_KEY = 'aaaaaaa';
 const openai = new OpenAIApi({ key: process.env.OPENAI_API_KEY });
 
 //Hardcoded transcript for testing GPT
