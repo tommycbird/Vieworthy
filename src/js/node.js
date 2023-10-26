@@ -262,9 +262,16 @@ timestamps_and_text = {
     // "9:57": "So you actually hold it down",
     // "9:58": "to switch between muted or ringer on, great.",
 }
+// Instead of joining all the values, format it more clearly
+const formattedTranscript = Object.entries(timestamps_and_text).map(([time, text]) => `${time}: ${text}`).join("\n");
 
-//Formatting for the input prompt which carries all the metadata
-const prompt_text = `Likes: 1000 || Title: Sample Title || Description: Sample Description || Transcript: ${Object.values(timestamps_and_text).join(" ")}`;
+const prompt_text = `
+Likes: 1000
+Title: Sample Title
+Description: Sample Description
+Transcript:
+${formattedTranscript}
+`;
 
 // Middleware variables
 app.use(bodyParser.json());
@@ -285,8 +292,9 @@ app.post('/askGPT', async (req, res) => {
         if (conversationHistory.length === 0) {
             const introMessage = { 
                 "role": "system", 
-                "content": "You are an assistant that will be passed in a number of likes, a title, a description, and a transcript for a video which will all be labeled and separated by ' || '. Your job will be to answer questions about this text." 
+                "content": "You will receive data about a video including likes, title, description, and a transcript. Answer questions based on this information." 
             };
+            
             const documentMessage = { "role": "user", "content": prompt_text };
             
             // Reset conversation history
