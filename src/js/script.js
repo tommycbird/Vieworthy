@@ -1,4 +1,7 @@
 
+//For using with endpoints later in the program
+const API_BASE_URL = 'http://13.58.229.43:3000';
+
 // Fetches title, description, likes and comments using YouTube API
 function fetchVideoData(url) {
     const videoID = extractVideoID(url);
@@ -80,10 +83,11 @@ function compute() {
     displayPopup();
     const urlInput = document.getElementById('url');
     const url = urlInput.value;
+
     
     //for testing purposes
     if (url === "test") {
-        fetch('http://localhost:3000/askGPT', {
+        fetch(`${API_BASE_URL}/askGPT`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -128,8 +132,8 @@ function compute() {
                 }
             })
             .catch(error => {
-                console.error('Error fetching video data:', error);
-            });
+                console.error('Error:', error);
+            })
     }
     
 }
@@ -140,6 +144,13 @@ function compute() {
 function handleChatSubmit() {
     const chatInput = document.querySelector(".input-container textarea");
     const userInput = chatInput.value;
+
+    const title = document.querySelector('.chat-title');
+    const promptContainer = document.querySelector('.prompt-container');
+
+    if (title) title.style.display = 'none';
+    if (promptContainer) promptContainer.style.display = 'none';
+
     if (userInput.trim() === "") return;  
 
     // Clear text input as soon as the submit button is clicked
@@ -149,8 +160,11 @@ function handleChatSubmit() {
     // Add user input to "chat" window
     addMessageToChat('user', userInput);
 
+    // Add a placeholder message for GPT's response with typing dots
+    addMessageToChat('gpt', '', true);
+
     // Send the userInput to server for processing by GPT
-    fetch('http://localhost:3000/askGPT', {
+    fetch(`${API_BASE_URL}/askGPT`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -159,29 +173,66 @@ function handleChatSubmit() {
     })
     .then(response => response.json())
     .then(data => {
+        const gptMessageContainer = document.querySelector('.gpt-message-container:last-child');
+        if (gptMessageContainer) {
+            gptMessageContainer.remove();
+        }
+    
+        const updatedTypingIndicator = document.querySelector('.typing-indicator');
+        const updatedGptMessage = document.querySelector('.gpt-message:not(.typing-indicator)');
+        updatedTypingIndicator.style.display = 'none';
+        updatedGptMessage.style.display = 'block';
+        
         console.log('GPT CHAT Response:', data.answer);
-        //add GPT response to "chat" window
         addMessageToChat('gpt', data.answer);
+        
+        // Hide the typing indicator
+        const currentTypingIndicator = document.querySelector('.typing-indicator');
+        if (currentTypingIndicator) {
+            currentTypingIndicator.style.display = 'none';
+        }
     })
+    
+    
     .catch(error => {
         console.error('Error getting response from GPT:', error);
     });
 }
 
+
 //======================================================================================================================================================
 
 //Shows the specified message "chat" on the correct side w/ correct color
-function addMessageToChat(role, content) {
+function addMessageToChat(role, content, isPlaceholder = false) {
     const chatContainer = document.querySelector('.chat-container');
-    
     const messageContainer = document.createElement('div');
     messageContainer.className = `message-container ${role}-message-container`;
     
     if (role === 'gpt') {
         const logo = document.createElement('img');
-        logo.src = "src/img/logo.png"; // path to your logo
+        logo.src = "/src/img/Logo.png";
         logo.className = "message-logo";
         messageContainer.appendChild(logo);
+
+        if (isPlaceholder) {
+            const typingDots = document.createElement('div');
+            typingDots.className = 'typing-indicator'; 
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('span');
+                typingDots.appendChild(dot);
+            }
+        
+            messageContainer.appendChild(typingDots);
+            chatContainer.appendChild(messageContainer);
+        
+            // Display the typing indicator now
+            typingDots.style.display = 'block';
+        
+            return; // We exit here since we don't want to add any message content for the placeholder
+        }
+        
+        
     }
 
     const message = document.createElement('div');
@@ -192,7 +243,6 @@ function addMessageToChat(role, content) {
     chatContainer.appendChild(messageContainer);
     chatContainer.scrollTop = chatContainer.scrollHeight; 
 }
-
 
 
 document.querySelector('.input-container button').addEventListener('click', handleChatSubmit);

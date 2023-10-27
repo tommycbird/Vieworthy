@@ -42,9 +42,23 @@
     <div class="popup">
         <button class="close-button" onclick="closePopup()">X</button>
         <div class="chat-container">
-            <!-- Sample GPT message with logo -->
+            <div class="chat-title">How Can We Help?</div>
+            <div class="prompt-container">
+                <div class="prompt">
+                    <span>When was the first time in the video that the NumPy library was mentioned?</span>
+                </div>
+                <div class="prompt">
+                    <span>Tell me about the reliability and accuracy of this video?</span>
+                </div>
+                <div class="prompt">
+                    <span>What is the like to dislike ratio on this video?</span>
+                </div>
+            </div>
+            <div class="gpt-message typing-indicator">
+                <span></span><span></span><span></span>
+            </div>
             <div class="gpt-message">
-                <span class="message-content"></span>
+                <span class="message-content"></span> 
             </div>
             <div class="user-message">
                 <span class="message-content"></span>
@@ -55,6 +69,7 @@
             <button>Submit</button>
         </div>
     </div>
+    
     
     
 

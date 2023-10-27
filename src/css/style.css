@@ -167,17 +167,14 @@ button {
 
 
 /* Close Button */
-.close {
+.close-button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 30px;
+  background: none;
+  border: none;
   color: black;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
   cursor: pointer;
 }
 
@@ -210,10 +207,50 @@ button {
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.typing-indicator {
+  display: none;
+  width: 30px;
+  height: 10px;
+  text-align: center;
 }
+
+.typing-indicator span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: #000; /* or any color you prefer */
+  border-radius: 50%;
+  margin: 0 2px;
+  animation: bounce 1s infinite alternate;
+}
+
+.typing-indicator span:nth-child(1) {
+  left: 0;
+  animation-delay: 0s;
+}
+
+.typing-indicator span:nth-child(2) {
+  left: 50%;
+  transform: translateX(-50%);
+  animation-delay: 0.25s;
+}
+
+.typing-indicator span:nth-child(3) {
+  right: 0;
+  animation-delay: 0.5s;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+
 
 .message {
   padding: 5px;
@@ -250,6 +287,29 @@ button {
   margin: 5px 0;
   border-radius: 5px;
   max-width: 70%;
+}
+
+.prompt-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 70%;
+}
+
+.prompt {
+  flex-basis: 32%; 
+  padding: 5px 10px;
+  margin: 5px 0;
+  border: 1px dashed black;
+  border-radius: 10px;
+  color: black;
+  margin-top: 25%;
+}
+.chat-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: black
 }
 
 .gpt-message {
@@ -293,9 +353,10 @@ button {
   background-color: #0056b3;
 }
 
-
-
-
+.input-container textarea::placeholder {
+  vertical-align: middle;
+  font-size: 16px;
+}
 
 
 /* ========================================================

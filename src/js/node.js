@@ -6,9 +6,22 @@ const cors = require('cors');
 const OpenAIApi = require('openai');
 const app = express();
 const port = 3000;
+const path = require('path');
+
+// Configuration
+const CONFIG = {
+    API_ENDPOINT: 'http://13.58.229.43:3000'
+};
+
+// Middleware variables
+app.use(bodyParser.json());
+app.use(cors());
+
+// Serve static files from the 'Vieworthy' directory
+app.use(express.static(path.join(__dirname, '../../')));
 
 //API Key for OpenAI
-process.env.OPENAI_API_KEY = 'aaaaaaa';
+process.env.OPENAI_API_KEY = 'aaaaaa';
 const openai = new OpenAIApi({ key: process.env.OPENAI_API_KEY });
 
 //Hardcoded transcript for testing GPT
@@ -272,10 +285,6 @@ Description: Sample Description
 Transcript:
 ${formattedTranscript}
 `;
-
-// Middleware variables
-app.use(bodyParser.json());
-app.use(cors());
 
 //List to save the conversation history into
 let conversationHistory = [];
