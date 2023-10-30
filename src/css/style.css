@@ -169,7 +169,7 @@ button {
 /* Close Button */
 .close-button {
   position: absolute;
-  right: 10px;
+  right: 1%;
   top: 10px;
   font-size: 30px;
   background: none;

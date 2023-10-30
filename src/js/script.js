@@ -199,7 +199,6 @@ function handleChatSubmit() {
     });
 }
 
-
 //======================================================================================================================================================
 
 //Shows the specified message "chat" on the correct side w/ correct color
@@ -229,10 +228,8 @@ function addMessageToChat(role, content, isPlaceholder = false) {
             // Display the typing indicator now
             typingDots.style.display = 'block';
         
-            return; // We exit here since we don't want to add any message content for the placeholder
-        }
-        
-        
+            return; 
+        } 
     }
 
     const message = document.createElement('div');
@@ -243,9 +240,11 @@ function addMessageToChat(role, content, isPlaceholder = false) {
     chatContainer.appendChild(messageContainer);
     chatContainer.scrollTop = chatContainer.scrollHeight; 
 }
-
-
 document.querySelector('.input-container button').addEventListener('click', handleChatSubmit);
+
+//======================================================================================================================================================
+
+
 
 // EVENT LISTENERS ======================================================================================================================================
 // Enter button pressed
