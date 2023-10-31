@@ -112,24 +112,26 @@ button {
 
 .form {
   padding: 10px;
-  margin-bottom:20px;
+  margin-bottom: 2vh;
   border: 1px solid white;
   background-color: black;
+  font-size: 1.25vw;
   color: white;
   resize: none;
-  height: 20px;
-  width: 400px;
+  height: 2vh;
+  width: 30vw;
 }
 
 .summarize-button {
   padding: 10px;
   cursor: pointer;
-  border: 1px solid white;
+  border: 2px solid white;
   background-color: var(--darkergray);
   color: white;
+  font-size: 1vw;
   font-weight: bold;
-  border-radius: 0px;
-  width: 150px;
+  border-radius: 1px;
+  width: 10vw;
 }
 
 .description {
@@ -191,22 +193,6 @@ button {
   flex-direction: column;
 }
 
-.loading-status {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.loader {
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #3498db;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  animation: spin 1s linear infinite;
-}
-
 .typing-indicator {
   display: none;
   width: 30px;
@@ -218,7 +204,7 @@ button {
   display: inline-block;
   width: 6px;
   height: 6px;
-  background-color: #000; /* or any color you prefer */
+  background-color: #000; 
   border-radius: 50%;
   margin: 0 2px;
   animation: bounce 1s infinite alternate;
@@ -249,8 +235,6 @@ button {
     transform: translateY(-5px);
   }
 }
-
-
 
 .message {
   padding: 5px;
@@ -293,7 +277,7 @@ button {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  margin-top: 70%;
+  margin-top: 20vh;
 }
 
 .prompt {
@@ -305,23 +289,18 @@ button {
   color: black;
   margin-top: 25%;
 }
-.chat-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: black
-}
 
 .gpt-message {
   background-color: #e0e0e0; 
+  font-size: medium;
   color: black;
 }
 
 .user-message {
   background-color: #3498db; 
+  font-size: large;
   color: white;
 }
-
 
 .input-container {
   display: flex;

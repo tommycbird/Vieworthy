@@ -15,7 +15,6 @@ async function getTranscript(link) {
     await driver.findElement(By.xpath('//*[@id="button-shape"]/button')).click();
     await new Promise(resolve => setTimeout(resolve, 100)); 
 
-
     //click on "show transcript"
     await driver.findElement(By.xpath('//*[@id="items"]/ytd-menu-service-item-renderer[2]')).click();
     await new Promise(resolve => setTimeout(resolve, 500));

@@ -74,6 +74,16 @@ function displayPopup() {
 //Closes the popup
 function closePopup() {
     document.querySelector('.popup').style.display = 'none';
+    clearChatHistory();
+}
+
+//======================================================================================================================================================
+
+function clearChatHistory() {
+    const chatContainer = document.querySelector('.chat-container');
+    while (chatContainer.firstChild) {
+        chatContainer.removeChild(chatContainer.firstChild);
+    }
 }
 
 //======================================================================================================================================================
@@ -212,7 +222,7 @@ function addMessageToChat(role, content, isPlaceholder = false) {
         logo.src = "/src/img/Logo.png";
         logo.className = "message-logo";
         messageContainer.appendChild(logo);
-
+    
         if (isPlaceholder) {
             const typingDots = document.createElement('div');
             typingDots.className = 'typing-indicator'; 
@@ -228,6 +238,8 @@ function addMessageToChat(role, content, isPlaceholder = false) {
             // Display the typing indicator now
             typingDots.style.display = 'block';
         
+            // Ensure the chat scrolls to the bottom when a new message is added
+            chatContainer.scrollTop = chatContainer.scrollHeight;
             return; 
         } 
     }
@@ -236,14 +248,12 @@ function addMessageToChat(role, content, isPlaceholder = false) {
     message.className = `message ${role}-message`;
     message.innerText = content;
     messageContainer.appendChild(message);
-    
     chatContainer.appendChild(messageContainer);
     chatContainer.scrollTop = chatContainer.scrollHeight; 
 }
 document.querySelector('.input-container button').addEventListener('click', handleChatSubmit);
 
 //======================================================================================================================================================
-
 
 
 // EVENT LISTENERS ======================================================================================================================================
