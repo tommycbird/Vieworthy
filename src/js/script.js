@@ -18,6 +18,16 @@ function fetchVideoData(url) {
     // Constructing the API URL for fetching comments
     const commentApiUrl = `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${videoID}&key=${API_KEY}&maxResults=100`;
 
+
+    //Data for Dislike API
+    const dislikeApiUrl = `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`;
+    const dislikeheaders = {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9',
+            'Pragma': 'no-cache',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive'
+    };
+
     return new Promise((resolve, reject) => {
         fetch(videoApiUrl)
             .then(response => response.json())
@@ -30,6 +40,7 @@ function fetchVideoData(url) {
                         title: snippet.title,
                         description: snippet.description,
                         likes: statistics.likeCount,
+                        dislikes: -1,
                         comments: [] 
                     };
 
@@ -49,7 +60,18 @@ function fetchVideoData(url) {
                         .catch(commentError => {
                             console.error("Failed to fetch comments:", commentError);
                             resolve(details);  
-                        });
+                    });
+                    
+                    //Fetch dislikes
+                    fetch(dislikeApiUrl,  {
+                        method: 'GET',
+                        headers: { apiheaders} })
+                    .then(response => response.json())
+                    .catch(error => console.log(error))
+                    .then(data => {
+                        details.dislikes = data.dislikes;
+                    })
+
                 } else {
                     reject("Failed to fetch video details");
                 }
