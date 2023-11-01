@@ -40,7 +40,6 @@ function fetchVideoData(url) {
                         title: snippet.title,
                         description: snippet.description,
                         likes: statistics.likeCount,
-                        dislikes: -1,
                         comments: [] 
                     };
 
@@ -65,7 +64,7 @@ function fetchVideoData(url) {
                     //Fetch dislikes
                     fetch(dislikeApiUrl,  {
                         method: 'GET',
-                        headers: { dislikeheaders} })
+                        headers: dislikeheaders})
                     .then(response => response.json())
                     .catch(error => console.log(error))
                     .then(data => {
@@ -142,12 +141,13 @@ function clearChatHistory() {
 
 //======================================================================================================================================================
 
-function constructPrompt(data, transcript) {
+function constructPrompt(data, transcript, dislikes) {
     let result = '';
-    
+
     result += `Title: ${data.title}\n`;
     result += `Description: ${data.description}\n`;
     result += `Likes: ${data.likes}\n`;
+    result += `Dislikes: ${dislikes}\n`
     
     if(data.comments && data.comments.length) {
         result += 'Comments:\n';
@@ -499,7 +499,7 @@ function compute() {
             .then(details => {
                 console.log("HERE ARE THE DETAILS", details);             
 
-                const prompt = constructPrompt(details, hardcodedTranscript);
+                const prompt = constructPrompt(details, hardcodedTranscript, details.dislikes);
                 fetchGPT(prompt);
             })
             .catch(error => {
