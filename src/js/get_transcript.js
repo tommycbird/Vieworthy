@@ -1,39 +1,84 @@
-const {Builder, Browser, By} = require('selenium-webdriver');
+const {Builder, Browser, By, until} = require('selenium-webdriver');
+
+function formatTranscript(istring) {
+  const parts = istring.split(' ');
+
+  let minutes = '0';
+  let seconds = '00';
+
+  if (parts[1] === 'second' || parts[1] === 'seconds') {
+    seconds = parts[0];
+    parts.splice(0,2);
+    if(parseInt(seconds) < 10 ) {
+      seconds = '0' + seconds;
+    }
+  } 
+  else if (parts[3] === 'second' || parts[3] === 'seconds') {
+    seconds = parts[2];
+    parts.splice(2,2);
+    if(parseInt(seconds) < 10 ) {
+      seconds = '0' + seconds;
+    }
+  }
+  if (parts[1] === 'minute' || parts[1] === 'minutes' || parts[1] === 'minute,' || parts[1] === 'minutes,') {
+    minutes = parts[0];
+    parts.splice(0,2);
+  } 
+
+  const ostring = minutes +':'+seconds +'; '+ parts.join(' ');
+  return ostring;
+}
+
+async function scrollUntilElement(driver, xpath) {
+  for (let i = 0; i < 10; i++) {
+    try {
+      driver.findElement(By.xpath(xpath));
+      break;
+    }
+    catch (error) {
+      driver.executeScript('window.scrollBy(0, 500);');
+      await new Promise(resolve => setTimeout(resolve, 200));
+    }
+  }
+
+}
 
 async function getTranscript(link) {
 
-    let driver = await new Builder().forBrowser(Browser.CHROME).build();
-    //const link = 'https://www.youtube.com/watch?v=JOiGEI9pQBs';  // some video
-      
-    await driver.get(link); 
+  let driver = await new Builder().forBrowser(Browser.CHROME).build();
+  let transcript = [] //storage for transcript
 
-    //delay was needed to get the webpage to load completely
-    //edit to maybe detect when the webpage loads?
-    await new Promise(resolve => setTimeout(resolve, 4000));
+  await driver.get(link); 
+  try{
+    //wait for description container to load
+    await driver.wait(until.elementLocated(By.xpath('//*[@id="expand"]')), 10000);
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    //xpath click on 3 dots
-    await driver.findElement(By.xpath('//*[@id="button-shape"]/button')).click();
-    await new Promise(resolve => setTimeout(resolve, 100)); 
+    //xpath click on description container
+    await driver.findElement(By.xpath('//*[@id="expand"]')).click();
 
-    //click on "show transcript"
-    await driver.findElement(By.xpath('//*[@id="items"]/ytd-menu-service-item-renderer[2]')).click();
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // scroll till 'show transcript' visible
+    await scrollUntilElement(driver, '//*[@id="primary-button"]/ytd-button-renderer/yt-button-shape/button');
 
     //click "show transcipt" to load the actual transcript
-    driver.executeScript('window.scrollBy(0, 200);'); // sometext bubble blocks element
     await driver.findElement(By.xpath('//*[@id="primary-button"]/ytd-button-renderer/yt-button-shape/button')).click();
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     //get all elements with transcript text
     let transcriptElements = await driver.findElements(By.className('segment style-scope ytd-transcript-segment-renderer'));
-    let transcript = []
 
     // get the text of each element
     for(let i = 0; i < transcriptElements.length; i++){
-      transcript.push(await transcriptElements[i].getAttribute('aria-label'));
+      let line = formatTranscript(await transcriptElements[i].getAttribute('aria-label'));
+      transcript.push(line);
     }
+  } 
+  catch (error) {
+    //quit if error
     await driver.quit();
+    console.error('error in fetching link', error.message);
+  }
     
+    await driver.quit();
     return transcript;
 };
-
