@@ -65,7 +65,7 @@ function fetchVideoData(url) {
                     //Fetch dislikes
                     fetch(dislikeApiUrl,  {
                         method: 'GET',
-                        headers: { apiheaders} })
+                        headers: { dislikeheaders} })
                     .then(response => response.json())
                     .catch(error => console.log(error))
                     .then(data => {
