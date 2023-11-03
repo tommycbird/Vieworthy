@@ -12,7 +12,7 @@
       }
     ],
     "icons": {
-      "48": "src/img/icon.png"
+      "48": "src/img/favicon.png"
     },
     "web_accessible_resources": [
         {

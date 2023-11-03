@@ -97,21 +97,16 @@ function extractVideoID(url) {
 
 //======================================================================================================================================================
 
-//Shows the popup
-function displayPopup() {
-    const popupElement = document.querySelector('.popup');
-    if (popupElement) {
-        popupElement.style.display = 'block'; 
+//Switches between form and popup
+function toggleDisplay(elemID) {
+    // To switch tabs
+    var elems = document.getElementsByClassName('active-element');
+    for (var i = 0; i < elems.length; i++) {
+        elems[i].style.display = 'none';
     }
+    document.getElementById(elemID).style.display = 'block';
 }
 
-//======================================================================================================================================================
-
-//Closes the popup
-function closePopup() {
-    document.querySelector('.popup').style.display = 'none';
-    clearChatHistory();
-}
 
 //======================================================================================================================================================
 //Resets GPT comve
@@ -167,7 +162,7 @@ function constructPrompt(data, transcript, dislikes) {
 
 //Current driver function  for OpenAI API
 function compute() {
-    displayPopup();
+    toggleDisplay('chatbox');
     clearConversationHistory()
     const urlInput = document.getElementById('url');
     const url = urlInput.value;
@@ -632,8 +627,10 @@ function addMessageToChat(role, content, isPlaceholder = false) {
     
     if (role === 'gpt') {
         const logo = document.createElement('img');
-        logo.src = "/src/img/Logo.png";
+        logo.src = "/src/img/logo_light.png";
         logo.className = "message-logo";
+        logo.style.width = '30px';
+        logo.style.height = '24px';
         messageContainer.appendChild(logo);
     
         if (isPlaceholder) {

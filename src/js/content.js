@@ -30,7 +30,7 @@ function injectButton() {
           if (contentParent && !contentParent.querySelector(':scope > .summarize-button')) {              
               // Create the button
               const sumButton = document.createElement('button');
-              sumButton.innerText = 'Summarize';
+              sumButton.innerText = 'Assess';
               sumButton.className = 'summarize-button';
 
               // Round the rectangle

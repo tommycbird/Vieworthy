@@ -2,19 +2,19 @@
   GENERAL STYLING AND VARIABLES
 ======================================================== */
 
-
+/* colors */
 :root {
   --darkergray: rgb(24, 24, 24);
+  --softred: #ff7171;
 }
 
 body {
   background: black;
   color: white;
-  display: flex;
-  justify-content: center; 
-  align-items: center;
-  flex-direction: column;
   min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 p {
@@ -39,6 +39,14 @@ a:active {
   text-decoration: none;
 }
 
+.hidden {
+  visibility: hidden;
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
 
 /* ========================================================
   HEADER
@@ -52,7 +60,7 @@ a:active {
   top: 0; 
   left: 50%; 
   transform: translateX(-50%); 
-  background-color: rgba(255, 238, 238, 0.457); 
+  background-color: rgba(255, 255, 255, 0.6); 
   z-index: 1000;
   border-radius: 5px;
 }
@@ -62,6 +70,12 @@ a:active {
   cursor: pointer;
   color: white;
   margin-right: 5px;
+  border-radius: 5px;
+}
+
+.tabs button:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: var(--darkergray)
 }
 
 .tabs button:last-child {
@@ -105,9 +119,20 @@ button {
   background: transparent;
 }
 
-button:hover {
-  color: rgb(0, 0, 0);
-  background-color: #ffffff9d;
+.page-content {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+.active-element {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  flex-direction: column;
 }
 
 /* ========================================================
@@ -119,29 +144,33 @@ button:hover {
   justify-content: center;
   align-items: center;
   height: 15vh;
+  width: 100%;
 }
   
 .form-group {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 300px;
+  flex-direction: row;
+  justify-content: center;
+  width: 40vw;
+  height: 4vh;
 }
 
 .form {
-  padding: 10px;
-  margin-bottom: 2vh;
   border: 1px solid white;
   background-color: black;
-  font-size: 1.25vw;
+  font-size: 2.5vh;
   color: white;
   resize: none;
-  height: 2vh;
-  width: 30vw;
+  width: 20vw;
+  height: 100%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .summarize-button {
-  padding: 10px;
+  margin-left: 5%;
   cursor: pointer;
   border: 2px solid white;
   background-color: var(--darkergray);
@@ -150,7 +179,10 @@ button:hover {
   font-weight: bold;
   border-radius: 1px;
   width: 10vw;
+  height: 100%;
+  box-sizing: border-box;
 }
+
 
 .description {
   margin-bottom: 10px;
@@ -159,17 +191,15 @@ button:hover {
 
 /* The popup (background) */
 .popup {
-  display: none;
-  position: fixed;
-  width: 70%;
-  height: 60%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
+  display: block;
+  position: relative;
+  width: 90vh;
+  height: 50vh;
+  background-color: rgb(0, 0, 0);
+  border: 2px solid white;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 20px rgba(255, 0, 0, 0.1);
   flex-direction: column;
   justify-content: space-between;
 }
@@ -177,7 +207,7 @@ button:hover {
 
 /* popup Content */
 .popup-content {
-  background-color: #fefefe;
+  background-color: #323232;
   margin: 10% auto;
   padding: 20px;
   border: 1px solid #888;
@@ -185,28 +215,30 @@ button:hover {
   color: black;
 }
 
-
 /* Close Button */
 .close-button {
   position: absolute;
-  right: 1%;
-  top: 10px;
-  font-size: 30px;
+  right: 0%;
+  top: 0%;
+  font-size: 24px;
   background: none;
   border: none;
-  color: black;
+  color: rgb(255, 255, 255);
   cursor: pointer;
 }
 
+.close-button:hover {
+  color: #ff7171;
+}
+
 .chat-container {
-  width: 90%;
   margin: 20px auto;
-  border: 1px solid #e0e0e0;
+  border: 3px solid rgb(24, 24, 24);
+  height: 75%;
   padding: 10px;
   border-radius: 5px;
-  background-color: #f9f9f9;
+  background-color: #242424;
   overflow-y: auto;
-  height: 70%; 
   display: flex;
   flex-direction: column;
 }
@@ -222,7 +254,7 @@ button:hover {
   display: inline-block;
   width: 6px;
   height: 6px;
-  background-color: #000; 
+  background-color: #ffffff; 
   border-radius: 50%;
   margin: 0 2px;
   animation: bounce 1s infinite alternate;
@@ -300,11 +332,11 @@ button:hover {
 
 .prompt {
   flex-basis: 32%; 
-  padding: 5px 10px;
+  padding: 10px 10px;
   margin: 5px 0;
-  border: 1px dashed black;
+  border: 1px dashed rgb(255, 255, 255);
   border-radius: 10px;
-  color: black;
+  color: rgb(255, 255, 255);
 }
 
 .gpt-message {
@@ -323,36 +355,81 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .input-container textarea {
-  width: 80%;
+  width: 100%;
   font-size: medium;
-  padding: 5px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  margin-left: 5%;
+  color: white;
+  margin-right: 5%;
   resize: none;
+  background: black;
 }
 
 .input-container button {
-  padding: 5px 10px;
-  background-color: #3498db;
+  background-color: var(--softred);
+  width: 20%;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-right: 5%;
 }
 
 .input-container button:hover {
-  background-color: #0056b3;
+  background-color: rgb(255, 255, 255);
+  color: var(--softred);
 }
 
 .input-container textarea::placeholder {
   vertical-align: middle;
   font-size: 16px;
 }
+
+
+/* ========================================================
+  INSTALL PAGE
+======================================================== */
+
+.install-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 50px;
+}
+
+
+.install-left,
+.install-right {
+    display: flex;
+    justify-content: center;
+    vertical-align: top;
+    flex-direction: column;
+    width: 48%; /* Adjust as needed to fit container */
+    padding: 5%;
+}
+
+.install-button {
+    display: inline-block;
+    background-color: var(--softred);
+    color: var(--main-text-color);
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.extension-image {
+    width: 40vw;
+    border-radius: 15px; /* rounded corners */
+}
+
 
 
 /* ========================================================
