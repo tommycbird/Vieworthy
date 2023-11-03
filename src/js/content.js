@@ -1,5 +1,15 @@
+function injectCSS() {
+    console.log("Injecting CSS...");
+    const link = document.createElement('link');
+    link.href = chrome.runtime.getURL('src/css/extension.css');
+    link.type = 'text/css';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+}
+
 function injectButton() {
-  console.log("Checking for injection...");
+  console.log("Injecting HTML...");
+  injectCSS();
 
   if (window.location.hostname === 'www.youtube.com') {
       const timeElements = document.querySelectorAll('span[id="text"].style-scope.ytd-thumbnail-overlay-time-status-renderer');
@@ -34,20 +44,7 @@ function injectButton() {
               sumButton.className = 'summarize-button';
 
               // Round the rectangle
-              sumButton.style.borderRadius = '12px';
-              sumButton.style.padding = '8px 16px'; 
-              sumButton.style.display = 'flex';      
-              sumButton.style.alignItems = 'center'; 
-
-              // Positioning and other styles
-              sumButton.style.position = 'absolute'; 
-              sumButton.style.bottom = '10px';       
-              sumButton.style.right = '10px';       
-              sumButton.style.backgroundColor = 'black';
-              sumButton.style.color = 'white';
-              sumButton.style.zIndex = '10';        
-              sumButton.style.border = 'none';     
-              sumButton.style.cursor = 'pointer';  
+              
 
               // Create the logo element
               const img = document.createElement('img');
@@ -63,6 +60,7 @@ function injectButton() {
               if (getComputedStyle(contentParent).position === 'static') {
                   contentParent.style.position = 'relative';
               }
+
 
               // Append the button to the content parent
               contentParent.appendChild(sumButton);
