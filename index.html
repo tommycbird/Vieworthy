@@ -3,7 +3,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="src/css/style.css">
-    <link rel="icon" type="image/x-icon" href="src/img/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="src/img/favicon.png">
     <link href="https://fonts.cdnfonts.com/css/open-sauce-one" rel="stylesheet">
     <script src="src/js/script.js" defer></script>
     <style>
@@ -13,65 +13,97 @@
 
 <body>
 
-    <!-- Header w/ logo and links -->
-    <div class="top-bar"> 
-        <a href=#>
-            <div class="top-left"> 
-                <img src="src/img/Logo Light.png" class="logo-img"> 
-                <div class="logo">Vieworthy</div> 
-            </div>
-        </a>
-        <div class="top-right"> 
-            <a href="https://github.com/tommycbird/Vieworthy">
-                <img src="src/img/ghub.png" class="ghub-img">
+    <!-- Tabs for navigation -->
+    <div class="tabs">
+        <button id="home-tab" onclick="showPage('home')">Home</button>
+        <button id="install-tab" onclick="showPage('install')">Install</button>
+    </div>
+
+    <!--====================== Home page  ======================-->
+    <div id="home" class="page-content">
+
+        <div class="icon-text-container">
+            <a href=#>
+                <div class="icon">
+                    <img src="src/img/logo_light.png" alt="Icon" />
+                </div>
             </a>
+            <div class="text">
+                <div class="big-text">Vieworthy</div>
+                <div class="small-text">Spend your time wisely</div>
+            </div>
+        </div>
+
+        <!-- Pop-up -->
+        <div class="popup">
+            <button class="close-button" onclick="closePopup()">X</button>
+            <div class="chat-container">
+                <div class="prompt-container">
+                    <div class="prompt">
+                        <span>When was the first time in the video that the NumPy library was mentioned?</span>
+                    </div>
+                    <div class="prompt">
+                        <span>Tell me about the reliability and accuracy of this video?</span>
+                    </div>
+                    <div class="prompt">
+                        <span>What is the like to dislike ratio on this video?</span>
+                    </div>
+                </div>
+                <div class="gpt-message typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="gpt-message">
+                    <span class="message-content"></span> 
+                </div>
+                <div class="user-message">
+                    <span class="message-content"></span>
+                </div>
+            </div>
+            <div class="input-container">
+                <textarea placeholder="Type your message..."></textarea>
+                <button>Submit</button>
+            </div>
+        </div>
+
+        <!-- YouTube URL Input -->
+        <div class="main">
+            <div class="form-group">
+                <textarea id="url" class="form" placeholder="Video URL..."></textarea>
+                <button onclick="compute()" class="summarize-button">
+                    GO
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- YouTube URL Input -->
-    <div class="main">
-        <div class="form-group">
-            <textarea id="url" class="form" placeholder="Video URL..."></textarea>
-            <button onclick="compute()" class="summarize-button">
-                GO
-            </button>
-        </div>
+
+
+    <!--====================== Install page  ======================-->
+    <div id="install" class="page-content" style="display: none;">
+
+        <p>apples</p>
+
     </div>
 
-    <!-- Pop-up -->
-    <div class="popup">
-        <button class="close-button" onclick="closePopup()">X</button>
-        <div class="chat-container">
-            <div class="prompt-container">
-                <div class="prompt">
-                    <span>When was the first time in the video that the NumPy library was mentioned?</span>
-                </div>
-                <div class="prompt">
-                    <span>Tell me about the reliability and accuracy of this video?</span>
-                </div>
-                <div class="prompt">
-                    <span>What is the like to dislike ratio on this video?</span>
-                </div>
-            </div>
-            <div class="gpt-message typing-indicator">
-                <span></span><span></span><span></span>
-            </div>
-            <div class="gpt-message">
-                <span class="message-content"></span> 
-            </div>
-            <div class="user-message">
-                <span class="message-content"></span>
-            </div>
-        </div>
-        <div class="input-container">
-            <textarea placeholder="Type your message..."></textarea>
-            <button>Submit</button>
-        </div>
-    </div>
-    
-    
-    
 
+    <!--====================== Footer  ======================-->
+    <div class = "ghub-button">
+        <a href="https://github.com/tommycbird/Vieworthy">
+            <img src="src/img/ghub.png" class="ghub-img">
+        </a>
+    </div>
+
+    
+    <script>
+        // To switch tabs
+        function showPage(pageId) {
+            var pages = document.getElementsByClassName('page-content');
+            for (var i = 0; i < pages.length; i++) {
+                pages[i].style.display = 'none';
+            }
+            document.getElementById(pageId).style.display = 'block';
+        }
+    </script>
 
 
 </body>

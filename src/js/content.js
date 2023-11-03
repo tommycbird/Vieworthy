@@ -51,7 +51,7 @@ function injectButton() {
 
               // Create the logo element
               const img = document.createElement('img');
-              img.src = chrome.runtime.getURL('src/img/icon.png');
+              img.src = chrome.runtime.getURL('src/img/favicon.png');
               img.width = 24;
               img.height = 24;
               img.style.marginRight = '10px'; 
