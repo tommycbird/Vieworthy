@@ -1,4 +1,5 @@
-const {Builder, Browser, By, chrome} = require('selenium-webdriver');
+const {Builder, Browser, By, Key, until, Capabilities} = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 
 async function getTranscript(link) {
     let transcript = [];
@@ -48,5 +49,5 @@ async function getTranscript(link) {
     return transcript;
 };
 
-// Test the function (remove this part if you don't want to run the function immediately upon executing the script)
-getTranscript('https://www.youtube.com/watch?v=JOiGEI9pQBs').then(console.log);
+
+module.exports = getTranscript;

@@ -8,9 +8,12 @@ const app = express();
 const port = 3000;
 const path = require('path');
 
+const getTranscript = require('./get_transcript');
+
+
 // Configuration
 const CONFIG = {
-    API_ENDPOINT: 'http://13.58.229.43:3000'
+    API_ENDPOINT: 'http://3.23.48.138:3000'
 };
 
 // Middleware variables
@@ -21,7 +24,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '../../')));
 
 //API Key for OpenAI
-process.env.OPENAI_API_KEY = '';
+process.env.OPENAI_API_KEY = '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';
 const openai = new OpenAIApi({ key: process.env.OPENAI_API_KEY });
 
 
