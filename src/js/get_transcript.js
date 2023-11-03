@@ -44,6 +44,7 @@ async function getTranscript(link) {
         await driver.quit();
     }
     
+    await driver.quit();
     return transcript;
 };
 
