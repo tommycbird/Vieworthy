@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "Vieworthy",
+    "version": "0.0.1",
+    "description": "A video summarizer",
+    "author": "vieworthy@gmail.com",
+    "permissions": ["activeTab"],
+    "content_scripts": [
+      {
+        "matches": ["https://www.youtube.com/*"],
+        "js": ["src/js/content.js"]
+      }
+    ],
+    "icons": {
+      "48": "src/img/icon.png"
+    },
+    "web_accessible_resources": [
+        {
+            "resources": ["src/img/*"],
+            "matches": ["<all_urls>"],
+            "extension_ids": ["*"]
+        }
+    ],
+    "action": {
+      "default_popup": "mini.html"
+    }
+    
+}
