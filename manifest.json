@@ -4,7 +4,10 @@
     "version": "0.0.1",
     "description": "A video summarizer",
     "author": "vieworthy@gmail.com",
-    "permissions": ["activeTab"],
+    "permissions": [
+      "activeTab",
+      "webNavigation"
+    ],
     "content_scripts": [
       {
         "matches": ["https://www.youtube.com/*"],
@@ -16,7 +19,7 @@
     },
     "web_accessible_resources": [
         {
-            "resources": ["src/img/*"],
+            "resources": ["src/*"],
             "matches": ["<all_urls>"],
             "extension_ids": ["*"]
         }

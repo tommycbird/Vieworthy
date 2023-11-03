@@ -1,0 +1,18 @@
+.summarize-button {
+    border-radius: 12px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #000000;
+    color: #ffffff;
+    z-index: 10;
+    border: none;
+    cursor: pointer;
+}
+
+.summarize-button:hover {
+    background-color: #3f3f3f;
+}
