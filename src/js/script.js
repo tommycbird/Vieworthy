@@ -36,11 +36,12 @@ function fetchVideoData(url) {
                     const snippet = data.items[0].snippet;
                     const statistics = data.items[0].statistics;
 
-                    const details = {
+                    var details = {
                         title: snippet.title,
                         description: snippet.description,
                         likes: statistics.likeCount,
-                        comments: [] 
+                        dislikes: 0,
+                        comments: []
                     };
 
                     // Fetch comments
@@ -54,7 +55,6 @@ function fetchVideoData(url) {
                                 });
                             }
 
-                            resolve(details);
                         })
                         .catch(commentError => {
                             console.error("Failed to fetch comments:", commentError);
@@ -68,7 +68,9 @@ function fetchVideoData(url) {
                     .then(response => response.json())
                     .catch(error => console.log(error))
                     .then(data => {
-                        details.dislikes = data.dislikes;
+                        const dislikes = data.dislikes;
+                        details.dislikes = dislikes
+                        resolve(details);
                     })
 
                 } else {
@@ -467,14 +469,16 @@ function compute() {
         "10:02; and I\'ll see you in the next one."
     ]
         
-    //for testing purposes
-    if (url === "test") {
+       //for testing purposes
+       if (url === "test") {
         fetch(`${CONFIG.API_ENDPOINT}/askGPT`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ prompt: "I am going to pass in text data about a given youtube video and I will ask you questions from the data" }) 
+            body: JSON.stringify({ 
+                prompt: "I am going to pass in text data about a given youtube video and I will ask you questions from the data" 
+            })
         })
         .then(response => response.json())
         .then(data => {
@@ -483,31 +487,60 @@ function compute() {
         .catch(error => {
             console.error('Error getting response from GPT:', error);
         });
+        
         //reset the input field
         urlInput.value = '';
         return; 
     }
     
-    //Actual method when we are ready to use the API with real URL's
-    else{
+    else {
         const videoID = extractVideoID(url);
         if (!videoID) {
             console.log("Invalid URL input");
             return;
         }
-        fetchVideoData(url)
-            .then(details => {
-                console.log("HERE ARE THE DETAILS", details);             
-
-                const prompt = constructPrompt(details, hardcodedTranscript, details.dislikes);
-                fetchGPT(prompt);
+    
+        // Use the getSeleniumInfo function to fetch the transcript
+        getSeleniumInfo(url)
+            .then(transcript => {
+                if (transcript) {
+                    fetchVideoData(url)
+                        .then(details => {
+                            console.log("HERE ARE THE DETAILS", details);
+                            
+                            const prompt = constructPrompt(details, transcript, details.dislikes);
+                            fetchGPT(prompt);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                } else {
+                    console.error("Failed to retrieve transcript from server.");
+                }
             })
             .catch(error => {
-                console.error('Error:', error);
-            })
+                console.error("Error fetching transcript:", error);
+            });
     }
     
-}
+    //======================================================================================================================================================
+    
+    function getSeleniumInfo(url) {
+        // This endpoint assumes you have an API set up on your server that will run the Selenium code and return the transcript.
+        return fetch(`${CONFIG.API_ENDPOINT}/getTranscript`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ url: url }) 
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Assume the API returns a JSON object with the transcript in the 'transcript' key
+            return data.transcript;
+        });
+    }
+}    
 
 //======================================================================================================================================================
 

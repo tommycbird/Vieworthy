@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '../../')));
 
 //API Key for OpenAI
-process.env.OPENAI_API_KEY = 'aaaaa';
+process.env.OPENAI_API_KEY = '';
 const openai = new OpenAIApi({ key: process.env.OPENAI_API_KEY });
 
 
@@ -63,6 +63,20 @@ app.post('/askGPT', async (req, res) => {
     } catch (error) {
         console.error("Error while processing /askGPT:", error);
         res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+//======================================================================================================================================================
+
+app.post('/getTranscript', async (req, res) => {
+    const url = req.body.url;
+    
+    try {
+        const transcript = await getTranscript(url);
+        res.json({ transcript: transcript });
+    } catch (error) {
+        console.error("Error occurred while fetching the transcript: ", error);
+        res.status(500).json({ error: "Failed to get transcript" });
     }
 });
 
