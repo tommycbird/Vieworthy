@@ -31,24 +31,39 @@ function formatTranscript(istring) {
 }
 
 async function scrollUntilElement(driver, xpath) {
+  // Scroll to the top of the page first.
+  await driver.executeScript('window.scrollTo(0, 0);');
+  await new Promise(resolve => setTimeout(resolve, 1000)); // Short pause after scrolling to top
+
+  let element = null;
   for (let i = 0; i < 50; i++) {
     try {
-      driver.findElement(By.xpath(xpath));
-      break;
-    }
-    catch (error) {
-      driver.executeScript('window.scrollBy(0, 500);');
-      await new Promise(resolve => setTimeout(resolve, 200));
+      element = await driver.findElement(By.xpath(xpath));
+      if (element) {
+        let isDisplayed = await element.isDisplayed();
+        if (isDisplayed) {
+          break; // If the element is displayed, we can break out of the loop
+        }
+      }
+    } catch (error) {
+      await driver.executeScript('window.scrollBy(0, 500);'); 
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for dynamic content to load
     }
   }
 
+  if (!element) {
+    throw new Error(`Element with xpath ${xpath} not found after scrolling`);
+  }
+
+  return element;
 }
+
 
 async function getTranscript(link) {
     // Set up Chrome in headless mode
     let options = new chrome.Options();
     options.addArguments('--headless');
-    options.addArguments('--no-sandbox'); // NOTE: Use this flag if you understand the security implications.
+    options.addArguments('--no-sandbox');
     options.addArguments('--disable-dev-shm-usage');
 
     let driver = await new Builder()
@@ -56,28 +71,23 @@ async function getTranscript(link) {
     .setChromeOptions(options)
     .build();
 
-    let transcript = []; //storage for transcript
+    let transcript = [];
+
+    await driver.get(link);
 
     try {
-      await driver.get(link);
-
-      // Wait for the description container to be clickable
-      let expandButton = await driver.wait(until.elementLocated(By.xpath('//*[@id="expand"]')), 10000);
-      await driver.wait(until.elementIsEnabled(expandButton), 10000); // Wait until the button is enabled
-
-      // Click on the description container
+      
+      // CLICK THE EXPAND BUTTON
+      let expandButton = await scrollUntilElement(driver, '//*[@id="expand"]');
       await expandButton.click();
 
-      // Scroll until 'show transcript' is visible and clickable
-      await scrollUntilElement(driver, '//*[@id="primary-button"]/ytd-button-renderer/yt-button-shape/button');
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Short pause after clicking expand
 
-      let showTranscriptButton = await driver.findElement(By.xpath('//*[@id="primary-button"]/ytd-button-renderer/yt-button-shape/button'));
-      await driver.wait(until.elementIsEnabled(showTranscriptButton), 10000); // Wait until the button is enabled
-
-      // Click "show transcript" to load the actual transcript
+      // CLICK THE SHOW TRANSCRIPT BUTTON
+      let showTranscriptButton = await scrollUntilElement(driver, '//*[@id="primary-button"]/ytd-button-renderer/yt-button-shape/button');
       await showTranscriptButton.click();
 
-      // Get all elements with transcript text
+      // SCRAPE THE TRANSCRIPT
       let transcriptElements = await driver.findElements(By.className('segment style-scope ytd-transcript-segment-renderer'));
 
       // Get the text of each element
@@ -88,7 +98,7 @@ async function getTranscript(link) {
     } catch (error) {
         console.error('Error occurred while fetching the transcript:', error);
     } finally {
-        // Quit the driver in the finally block to ensure it quits in both success and error cases
+        // Close the browser
         await driver.quit();
     }
 
