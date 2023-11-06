@@ -175,8 +175,8 @@ function compute() {
     
     console.log("URL:", url)
         
-       //for testing purposes
-       if (url === "test") {
+    //for testing purposes
+    if (url === "test") {
         fetch(`${CONFIG.API_ENDPOINT}/askGPT`, {
             method: 'POST',
             headers: {
@@ -197,9 +197,31 @@ function compute() {
         //reset the input field
         urlInput.value = '';
         return; 
-    }
-    
-    else {
+    } else if(url === "https://www.youtube.com/watch?v=enR58PYHaWw&t=2s") {
+        //Mark ass brownlie
+        fetchVideoData(url)
+            .then(details => {
+                console.log("Video details", details);
+                
+                const prompt = constructPrompt(details, dummyTranscript1);
+                fetchGPT(prompt);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    } else if(url === "https://www.youtube.com/watch?v=YbJOTdZBX1g") {
+        //you toob rewind
+        fetchVideoData(url)
+            .then(details => {
+                console.log("Video details", details);
+                
+                const prompt = constructPrompt(details, dummyTranscript2);
+                fetchGPT(prompt);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    } else {
         console.log("Extracting data from URL");
         const videoID = extractVideoID(url);
         if (!videoID) {
@@ -390,7 +412,7 @@ textarea.addEventListener('keydown', function(e) {
 
 //Change score circle color
 function updateVideoScoreColor() {
-    const videoScoreElement = document.querySelector('.video-score');
+    const scoreElement = document.querySelector('.video-score');
     const score = parseFloat(scoreElement.textContent);
     let color = 'lightgrey'; // Fallback color
 
@@ -404,7 +426,7 @@ function updateVideoScoreColor() {
     scoreElement.style.backgroundColor = color;
 }
 
-hardcodedTranscript = [
+dummyTranscript1 = [
     '0:00; - All right, so today I got a hold of',
     '0:01; and got to poke around the new iPhone 15',
     '0:04; and the iPhone 15 Pros.',
@@ -700,4 +722,76 @@ hardcodedTranscript = [
     '9:59; I\'ll have some more videos',
     '10:00; Thanks for watching, guys,',
     "10:02; and I\'ll see you in the next one."
-]
+];
+
+dummyTranscript2 = [
+    '0:09; - Aaaah',
+    '0:10; - It\'s Rewind time.',
+    '0:12; - If I controlled Rewind I would want',
+    '0:16; - Fortnite and Marques Brownlee.',
+    '0:24; - Is this what you wanted?',
+    '0:25; - You know who I would have asked for?',
+    '0:27; - Quit horsing around.',
+    '0:30; - Play me some of that jumping music.',
+    '0:32; - Did you say jumping music?',
+    '0:34; - Jumping music?',
+    '0:39; - Everybody! Off!',
+    '0:48; - Not even a thank you?!',
+    '0:57; - Is that Marques?',
+    '0:59; - I want Liza!',
+    '1:04; - Yeaaaaaahhhh!!!!',
+    '1:10; - So guys, apparently we control Rewind this year.',
+    '1:16; - Y\'all we can do whatever we want. What do we do?',
+    '1:25; - There\'s one thing this video needs.',
+    '1:28; - K-pop!',
+    '1:48; - Can I have a Royal Wedding?',
+    '1:51; - Yeah, but you\'re marrying Bongo Cat.',
+    '1:52; - Wait, what?',
+    '2:02; - Rewind needs more science.',
+    '2:03; - Can we do an experiment?',
+    '2:05; - I love that. Melting lipstick.',
+    '2:13; - I want to eat something.',
+    '2:15; - Mukbang!',
+    '2:16; - Yes, let\'s do it in Korea!',
+    '2:25; - Gallop, what do you want?',
+    '2:34; - Marshmello needs to be in this video.',
+    '2:38; - Who is Marshmello?',
+    '2:39; - How about yodeling kid?',
+    '2:42; - With Adam Rippon!',
+    '3:02; - Guys, let\'s do the In My Feelings challenge.',
+    '3:04; - Right!',
+    '3:08; - I love this song!',
+    '3:09; - Let\'s hear the remix!',
+    '3:42; - Wait, wait, wait. Hold on, hold on.',
+    '3:45; - You know who really needs to be in this Rewind video?',
+    '3:48; - Everyone who managed to do something bigger than themselves this year.',
+    '3:51; - Found a way to help the causes that matter to them most.',
+    '3:54; - To everyone who proved it\'s ok to talk about mental health this year.',
+    '3:58; - Showing our viewers that it\'s ok to go through tough times like that.',
+    '4:01; - It takes a lot of bravery to be that vulnerable and I\'m so proud of this community.',
+    '4:05; - I think this year\'s Rewind should celebrate the fierce, fabulous',
+    '4:09; - and empowering art of drag.',
+    '4:11; - I want to see all of you be your own kind of beautiful.',
+    '4:14; - And to those people who have raised money in the field of education.',
+    '4:17; - Can we also give a moment to Asian representation in entertainment this year?',
+    '4:22; - Major strides were made.',
+    '4:23; - And to the people who put aside their differences.',
+    '4:25; - Yeah, and created something really special.',
+    '4:27; - Here\'s to all women in 2018 for finding their voices.',
+    '4:31; - It\'s nice seeing how women grew and were empowered.',
+    '4:34; - Can we give a moment to working moms? Let\'s do it!',
+    '4:37; - To everyone who taught, or learned, something new this year.',
+    '4:42; - And to all the refugees and anyone looking for a home.',
+    '4:45; - All of us should send a toast to the kids who follow their dreams.',
+    '4:49; - I want to thank the whole community that always supports during our best and worst.',
+    '4:54; - We are a family, we are a team.',
+    '4:56; - Family is everything.',
+    '4:58; - I want to give a moment to everyone who supported me when I got sick.',
+    '5:02; - All of the comments and messages I got made me feel like I wasn\'t alone.',
+    '5:07; - We\'re forgetting something.',
+    '5:11; - I think we should read the comments.',
+    '5:22; - Yeah I have a feeling this is going to get a little bit crazy.',
+    '5:26; - Let\'s give the people what they want.',
+    '6:53; - Aaaahhh',
+    '6:57; - That\'s hot, that\'s hot.'
+];
