@@ -24,7 +24,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '../../')));
 
 //API Key for OpenAI
-process.env.OPENAI_API_KEY = 'aaaaa';
+process.env.OPENAI_API_KEY = 'aaa';
 const openai = new OpenAIApi({ key: process.env.OPENAI_API_KEY });
 
 
