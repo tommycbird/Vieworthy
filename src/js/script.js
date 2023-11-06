@@ -154,6 +154,11 @@ function constructPrompt(data, transcript, dislikes) {
     }
     result += `Transcript: ${transcript}\n\n`;
 
+    // Fill in the score roudned to 1 decimal place
+    const score = (data.likes / (data.likes + dislikes) * 10);
+    // Change text element of score circle
+    const scoreElement = document.querySelector('.video-score');
+    scoreElement.textContent = score.toFixed(1);
 
     return result;
 }
@@ -377,6 +382,25 @@ textarea.addEventListener('keydown', function(e) {
         compute();
     }
 });
+
+//Change score circle color
+function updateVideoScoreColor(scoreElement) {
+    const score = parseFloat(scoreElement.textContent);
+    let color = 'lightgrey'; // Fallback color
+  
+    if (score <= 10.0 && score >= 0.0) {
+      // Calculate the color based on the score: 0.0 = red, 10.0 = green
+      const greenValue = Math.round((score / 10) * 255);
+      const redValue = 255 - greenValue;
+      color = `rgb(${redValue}, ${greenValue}, 0)`;
+    }
+  
+    scoreElement.style.backgroundColor = color;
+  }
+  
+  // Run this function when the score is set/updated
+  const videoScoreElement = document.querySelector('.video-score');
+  updateVideoScoreColor(videoScoreElement);
 
 
 
