@@ -1,15 +1,12 @@
 const {Builder, Browser, By, until} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome'); 
 
-// ... rest of your unchanged code ...
 
 async function getTranscript(link) {
   let options = new chrome.Options();
   options.addArguments('--headless');
-  // ... rest of your unchanged code ...
 }
 
-// ...
 
 function formatTranscript(istring) {
   const parts = istring.split(' ');
