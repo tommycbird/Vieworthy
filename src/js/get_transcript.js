@@ -78,18 +78,21 @@ async function getTranscript(link) {
     try {
       
       // CLICK THE EXPAND BUTTON
+      console.log('Clicking expand button');
       let expandButton = await scrollUntilElement(driver, '//*[@id="expand"]');
       await expandButton.click();
 
       await new Promise(resolve => setTimeout(resolve, 2000)); // Short pause after clicking expand
 
       // CLICK THE SHOW TRANSCRIPT BUTTON
-      let showTranscriptButton = await scrollUntilElement(driver, '//*[@id="primary-button"]/ytd-button-renderer/yt-button-shape/button');
+      console.log('Clicking show transcript button');
+      let showTranscriptButton = await scrollUntilElement(driver, '//*[@id="primary-button"]//button[contains(@class, "yt-spec-button-shape-next")]');
       await showTranscriptButton.click();
 
       // SCRAPE THE TRANSCRIPT
+      console.log('Scraping transcript');
       let transcriptElements = await driver.findElements(By.className('segment style-scope ytd-transcript-segment-renderer'));
-
+      
       // Get the text of each element
       for (let i = 0; i < transcriptElements.length; i++) {
           let line = formatTranscript(await transcriptElements[i].getAttribute('aria-label'));
