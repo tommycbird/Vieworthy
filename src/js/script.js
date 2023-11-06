@@ -155,7 +155,8 @@ function constructPrompt(data, transcript) {
     result += `Transcript: ${transcript}\n\n`;
 
     // Fill in the score roudned to 1 decimal place
-    const score = (data.likes / (data.likes + data.dislikes) * 10);
+    const score = ((+data.likes) / ((+data.likes) + (+data.dislikes)) * 10.0);
+    updateVideoScoreColor();
     // Change text element of score circle
     const scoreElement = document.querySelector('.video-score');
     scoreElement.textContent = score.toFixed(1);
@@ -388,25 +389,20 @@ textarea.addEventListener('keydown', function(e) {
 });
 
 //Change score circle color
-function updateVideoScoreColor(scoreElement) {
+function updateVideoScoreColor() {
+    const videoScoreElement = document.querySelector('.video-score');
     const score = parseFloat(scoreElement.textContent);
     let color = 'lightgrey'; // Fallback color
-  
+
     if (score <= 10.0 && score >= 0.0) {
-      // Calculate the color based on the score: 0.0 = red, 10.0 = green
-      const greenValue = Math.round((score / 10) * 255);
-      const redValue = 255 - greenValue;
-      color = `rgb(${redValue}, ${greenValue}, 0)`;
+        // Calculate the color based on the score: 0.0 = red, 10.0 = green
+        const greenValue = Math.round((score / 10) * 255);
+        const redValue = 255 - greenValue;
+        color = `rgb(${redValue}, ${greenValue}, 0)`;
     }
-  
+
     scoreElement.style.backgroundColor = color;
-  }
-  
-  // Run this function when the score is set/updated
-  const videoScoreElement = document.querySelector('.video-score');
-  updateVideoScoreColor(videoScoreElement);
-
-
+}
 
 hardcodedTranscript = [
     '0:00; - All right, so today I got a hold of',
