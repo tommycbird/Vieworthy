@@ -109,7 +109,7 @@ function toggleDisplay(elemID) {
 
 
 //======================================================================================================================================================
-//Resets GPT comve
+//Resets GPT convo
 function clearConversationHistory() {
     // Make an HTTP request to clear the conversation history on the server.
     fetch(`${CONFIG.API_ENDPOINT}/clearConversationHistory`, {
@@ -138,13 +138,13 @@ function clearChatHistory() {
 
 //======================================================================================================================================================
 
-function constructPrompt(data, transcript, dislikes) {
+function constructPrompt(data, transcript) {
     let result = '';
 
     result += `Title: ${data.title}\n`;
     result += `Description: ${data.description}\n`;
     result += `Likes: ${data.likes}\n`;
-    result += `Dislikes: ${dislikes}\n`
+    result += `Dislikes: ${data.dislikes}\n`
     
     if(data.comments && data.comments.length) {
         result += 'Comments:\n';
@@ -155,7 +155,7 @@ function constructPrompt(data, transcript, dislikes) {
     result += `Transcript: ${transcript}\n\n`;
 
     // Fill in the score roudned to 1 decimal place
-    const score = (data.likes / (data.likes + dislikes) * 10);
+    const score = (data.likes / (data.likes + data.dislikes) * 10);
     // Change text element of score circle
     const scoreElement = document.querySelector('.video-score');
     scoreElement.textContent = score.toFixed(1);
@@ -172,6 +172,7 @@ function compute() {
     const urlInput = document.getElementById('url');
     const url = urlInput.value;
     
+    console.log("URL:", url)
         
        //for testing purposes
        if (url === "test") {
@@ -198,6 +199,7 @@ function compute() {
     }
     
     else {
+        console.log("Extracting data from URL");
         const videoID = extractVideoID(url);
         if (!videoID) {
             console.log("Invalid URL input");
@@ -210,9 +212,9 @@ function compute() {
                 if (transcript) {
                     fetchVideoData(url)
                         .then(details => {
-                            console.log("HERE ARE THE DETAILS", details);
+                            console.log("Video details", details);
                             
-                            const prompt = constructPrompt(details, transcript, details.dislikes);
+                            const prompt = constructPrompt(details, transcript);
                             fetchGPT(prompt);
                         })
                         .catch(error => {
@@ -227,22 +229,24 @@ function compute() {
             });
     }
     
-    //======================================================================================================================================================
-    
-    function getSeleniumInfo(url) {
-        return fetch(`${CONFIG.API_ENDPOINT}/getTranscript`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ url: url }) 
-        })
-        .then(response => response.json())
-        .then(data => {
-            return data.transcript;
-        });
-    }
 }    
+
+//======================================================================================================================================================
+
+
+async function getSeleniumInfo(url) {
+    return fetch(`${CONFIG.API_ENDPOINT}/getTranscript`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ url: url }) 
+    })
+    .then(response => response.json())
+    .then(data => {
+        return data.transcript;
+    });
+}
 
 //======================================================================================================================================================
 
