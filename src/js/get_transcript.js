@@ -60,52 +60,52 @@ async function scrollUntilElement(driver, xpath) {
 
 
 async function getTranscript(link) {
-    // Set up Chrome in headless mode
-    let options = new chrome.Options();
-    options.addArguments('--headless');
-    options.addArguments('--no-sandbox');
-    options.addArguments('--disable-dev-shm-usage');
+  let transcript = []; //storage for transcript
+  let chromeOptions = new chrome.Options();
+  chromeOptions.addArguments('--headless=new');
+  chromeOptions.addArguments('--no-sandbox');
+  chromeOptions.addArguments('--disable-dev-shm-usage');
 
-    let driver = await new Builder()
+  let driver = await new Builder()
     .forBrowser(Browser.CHROME)
-    .setChromeOptions(options)
+    .setChromeOptions(chromeOptions)
     .build();
+  
+  try{
+    await driver.get(link); 
 
-    let transcript = [];
+    //wait for description container to load
+    await driver.wait(until.elementLocated(By.xpath('//*[@id="expand"]')), 10000);
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    await driver.get(link);
+    //xpath click on description container
+    await driver.findElement(By.xpath('//*[@id="expand"]')).click();
 
-    try {
-      
-      // CLICK THE EXPAND BUTTON
-      console.log('Clicking expand button');
-      let expandButton = await scrollUntilElement(driver, '//*[@id="expand"]');
-      await expandButton.click();
+    // scroll till 'show transcript' visible
+    await scrollUntilElement(driver, '//*[@id="primary-button"]/ytd-button-renderer/yt-button-shape/button');
+    console.log('scorlled to transcript');
 
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Short pause after clicking expand
+    //click "show transcipt" to load the actual transcript
+    await driver.findElement(By.xpath('//*[@id="primary-button"]/ytd-button-renderer/yt-button-shape/button')).click();
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // CLICK THE SHOW TRANSCRIPT BUTTON
-      console.log('Clicking show transcript button');
-      let showTranscriptButton = await scrollUntilElement(driver, '//*[@id="primary-button"]//button[contains(@class, "yt-spec-button-shape-next")]');
-      await showTranscriptButton.click();
+    //get all elements with transcript text
+    let transcriptElements = await driver.findElements(By.className('segment style-scope ytd-transcript-segment-renderer'));
 
-      // SCRAPE THE TRANSCRIPT
-      console.log('Scraping transcript');
-      let transcriptElements = await driver.findElements(By.className('segment style-scope ytd-transcript-segment-renderer'));
-      
-      // Get the text of each element
-      for (let i = 0; i < transcriptElements.length; i++) {
-          let line = formatTranscript(await transcriptElements[i].getAttribute('aria-label'));
-          transcript.push(line);
-      }
-    } catch (error) {
-        console.error('Error occurred while fetching the transcript:', error);
-    } finally {
-        // Close the browser
-        await driver.quit();
+    // get the text of each element
+    for(let i = 0; i < transcriptElements.length; i++){
+      let line = formatTranscript(await transcriptElements[i].getAttribute('aria-label'));
+      transcript.push(line);
     }
-
-  return transcript;
+  } 
+  catch (error) {
+    //quit if error
+    await driver.quit();
+    console.error('error in fetching link', error.message);
+  }
+    
+    await driver.quit();
+    return transcript;
 };
 
 module.exports = getTranscript;
