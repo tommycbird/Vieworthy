@@ -43,7 +43,7 @@ app.post('/askGPT', async (req, res) => {
         conversationHistory.push(queryMessage);
 
         const response = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo-16k",
+            model: "gpt-4-1106-preview",
             messages: conversationHistory,
         });
 
