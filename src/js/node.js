@@ -24,7 +24,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '../../')));
 
 //API Key for OpenAI
-process.env.OPENAI_API_KEY = 'not this time';
+process.env.OPENAI_API_KEY = 'nonono';
 const openai = new OpenAIApi({ key: process.env.OPENAI_API_KEY });
 
 
@@ -36,7 +36,6 @@ let conversationHistory = [];
 //Method to query the openAI API
 app.post('/askGPT', async (req, res) => {
     try {
-        console.log("Received request for /askGPT:", req.body);
         const userMessage = req.body.prompt;
         
         const queryMessage = { "role": "user", "content": userMessage };
@@ -47,7 +46,6 @@ app.post('/askGPT', async (req, res) => {
             messages: conversationHistory,
         });
 
-        console.log("OpenAI API Response:", response); 
         const answer = response.choices && response.choices[0] && response.choices[0].message && response.choices[0].message.content;
         if (answer) {
             // response from GPT is added to the history of the convo

@@ -105,7 +105,6 @@ async function getTranscript(link) {
     for(let i = 0; i < transcriptElements.length; i++){
       let line = formatTranscript(await transcriptElements[i].getAttribute('aria-label'));
       transcript.push(line);
-      console.log(`Line ${i}: ${line}`);
     }
     console.log('Transcript lines fetched');
   } 
