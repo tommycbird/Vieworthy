@@ -169,90 +169,42 @@ function constructPrompt(data, transcript) {
 //Current driver function  for OpenAI API
 function compute() {
     toggleDisplay('chatbox');
-    clearConversationHistory()
+    clearConversationHistory();
     const urlInput = document.getElementById('url');
     const url = urlInput.value;
     
-    console.log("URL:", url)
-        
-    //for testing purposes
-    if (url === "test") {
-        fetch(`${CONFIG.API_ENDPOINT}/askGPT`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 
-                prompt: "I am going to pass in text data about a given youtube video and I will ask you questions from the data" 
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('GPT Response:', data.answer);  
+    console.log("URL:", url);
+    console.log("Extracting data from URL");
+    const videoID = extractVideoID(url);
+    if (!videoID) {
+        console.log("Invalid URL input");
+        return;
+    }
+
+    let prompt = "I am going to pass in text data about a given YouTube video and I will ask you questions from the data";
+
+    // Use the getSeleniumInfo function to fetch the transcript
+    getSeleniumInfo(url)
+        .then(transcript => {
+            if (transcript) {
+                fetchVideoData(url)
+                    .then(details => {
+                        console.log("Video details", details);
+                        prompt += constructPrompt(details, transcript);
+                        fetchGPT(prompt);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            } else {
+                console.error("Failed to retrieve transcript from server.");
+            }
         })
         .catch(error => {
-            console.error('Error getting response from GPT:', error);
+            console.error("Error fetching transcript:", error);
         });
-        
-        //reset the input field
-        urlInput.value = '';
-        return; 
-    } else if(url === "https://www.youtube.com/watch?v=enR58PYHaWw&t=2s") {
-        //Mark ass brownlie
-        fetchVideoData(url)
-            .then(details => {
-                console.log("Video details", details);
-                
-                const prompt = constructPrompt(details, dummyTranscript1);
-                fetchGPT(prompt);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    } else if(url === "https://www.youtube.com/watch?v=YbJOTdZBX1g") {
-        //you toob rewind
-        fetchVideoData(url)
-            .then(details => {
-                console.log("Video details", details);
-                
-                const prompt = constructPrompt(details, dummyTranscript2);
-                fetchGPT(prompt);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    } else {
-        console.log("Extracting data from URL");
-        const videoID = extractVideoID(url);
-        if (!videoID) {
-            console.log("Invalid URL input");
-            return;
-        }
-    
-        // Use the getSeleniumInfo function to fetch the transcript
-        getSeleniumInfo(url)
-            .then(transcript => {
-                if (transcript) {
-                    fetchVideoData(url)
-                        .then(details => {
-                            console.log("Video details", details);
-                            
-                            const prompt = constructPrompt(details, transcript);
-                            fetchGPT(prompt);
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                } else {
-                    console.error("Failed to retrieve transcript from server.");
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching transcript:", error);
-            });
-    }
-    
-}    
+}
+
 
 //======================================================================================================================================================
 

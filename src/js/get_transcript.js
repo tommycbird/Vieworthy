@@ -33,7 +33,7 @@ function formatTranscript(istring) {
 async function scrollUntilElement(driver, xpath) {
   // Scroll to the top of the page first.
   await driver.executeScript('window.scrollTo(0, 0);');
-  await new Promise(resolve => setTimeout(resolve, 1000)); // Short pause after scrolling to top
+  await new Promise(resolve => setTimeout(resolve, 3000)); 
 
   let element = null;
   for (let i = 0; i < 50; i++) {
@@ -47,7 +47,7 @@ async function scrollUntilElement(driver, xpath) {
       }
     } catch (error) {
       await driver.executeScript('window.scrollBy(0, 500);'); 
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for dynamic content to load
+      await new Promise(resolve => setTimeout(resolve, 3000)); 
     }
   }
 
@@ -72,40 +72,52 @@ async function getTranscript(link) {
     .build();
   
   try{
-    await driver.get(link); 
+    console.log('Starting getTranscript function');
+    console.log('Navigating to link:', link);
+    await driver.get(link);
+    console.log('Page loaded');
 
-    //wait for description container to load
-    await driver.wait(until.elementLocated(By.xpath('//*[@id="expand"]')), 10000);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log('Waiting for description container...');
+    await driver.wait(until.elementLocated(By.xpath('//*[@id="expand"]')), 30000);
+    console.log('Description container loaded');
 
-    //xpath click on description container
+    console.log('Clicking on description container...');
     await driver.findElement(By.xpath('//*[@id="expand"]')).click();
+    console.log('Clicked description container');
 
-    // scroll till 'show transcript' visible
+    console.log('Waiting after click...');
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
+    console.log('Scrolling to transcript...');
     await scrollUntilElement(driver, '//*[@id="primary-button"]/ytd-button-renderer/yt-button-shape/button');
-    console.log('scorlled to transcript');
+    console.log('Scrolled to transcript');
 
-    //click "show transcipt" to load the actual transcript
-    await driver.findElement(By.xpath('//*[@id="primary-button"]/ytd-button-renderer/yt-button-shape/button')).click();
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log('Clicking "show transcript" button...');
+    let button = await driver.findElement(By.xpath('//*[@id="primary-button"]/ytd-button-renderer/yt-button-shape/button'));
+    await driver.executeScript("arguments[0].click();", button);
+    console.log('Clicked "show transcript" button');
 
-    //get all elements with transcript text
+    console.log('Waiting after click...');
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
+    console.log('Fetching transcript lines...');
     let transcriptElements = await driver.findElements(By.className('segment style-scope ytd-transcript-segment-renderer'));
-
-    // get the text of each element
     for(let i = 0; i < transcriptElements.length; i++){
       let line = formatTranscript(await transcriptElements[i].getAttribute('aria-label'));
       transcript.push(line);
+      console.log(`Line ${i}: ${line}`);
     }
+    console.log('Transcript lines fetched');
   } 
   catch (error) {
-    //quit if error
+    console.error('Error occurred while fetching the transcript:', error);
+  }
+  finally {
+    console.log('Quitting driver');
     await driver.quit();
-    console.error('error in fetching link', error.message);
   }
     
-    await driver.quit();
-    return transcript;
-};
+  return transcript;
+}
 
 module.exports = getTranscript;
