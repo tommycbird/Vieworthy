@@ -14,18 +14,28 @@ function fetchVideoData(url) {
     const API_KEY = "AIzaSyCe3jBxqhacGmezpofd5olN3Cv5Qmjy_mE";
     const videoApiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoID}&key=${API_KEY}&part=snippet,statistics`;
     const contentDetailsApiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoID}&key=${API_KEY}&part=contentDetails`;
+    const commentApiUrl = `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${videoID}&key=${API_KEY}&maxResults=100`;
+
+     //Data for Dislike API
+     const dislikeApiUrl = `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`;
+     const dislikeheaders = {
+         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9',
+             'Pragma': 'no-cache',
+             'Cache-Control': 'no-cache',
+             'Connection': 'keep-alive'
+     };
 
     return new Promise((resolve, reject) => {
         fetch(videoApiUrl)
             .then(response => response.json())
             .then(data => {
                 if (data.items && data.items.length > 0) {
-                    const details = {
+                    var details = {
                         title: data.items[0].snippet.title,
                         views: data.items[0].statistics.viewCount,
                         likes: data.items[0].statistics.likeCount,
-                        dislikes: data.items[0].statistics.dislikeCount,
-                        comments: data.items[0].statistics.commentCount
+                        dislikes: 0,
+                        comments: []
                     };
 
                     // Fetch content details for duration
@@ -43,6 +53,35 @@ function fetchVideoData(url) {
                             console.error("Failed to fetch content details:", error);
                             reject(error);
                         });
+
+                        // Fetch comments
+                        fetch(commentApiUrl)
+                            .then(commentResponse => commentResponse.json())
+                            .then(commentData => {
+                                if (commentData.items) {
+                                    commentData.items.forEach(item => {
+                                        const comment = item.snippet.topLevelComment.snippet.textDisplay;
+                                        details.comments.push(comment);
+                                    });
+                                }
+
+                            })
+                            .catch(commentError => {
+                                console.error("Failed to fetch comments:", commentError);
+                                resolve(details);  
+                        });
+                
+                    //Fetch dislikes
+                    fetch(dislikeApiUrl,  {
+                        method: 'GET',
+                        headers: dislikeheaders})
+                        .then(response => response.json())
+                        .catch(error => console.log(error))
+                        .then(data => {
+                            const dislikes = data.dislikes;
+                            details.dislikes = dislikes
+                            resolve(details);
+                        })
                 } else {
                     reject("Failed to fetch video data");
                 }
@@ -161,12 +200,14 @@ function compute() {
                 console.log("Video is too long (over 15 minutes).");
                 return; 
             }
+            console.log("Video details", details);
 
             // If duration is okay, fetch the transcript
             getSeleniumInfo(url)
                 .then(transcript => {
                     if (transcript) {
                         prompt += constructPrompt(details, transcript);
+                        console.log("Prompt", prompt);
                         fetchGPT(prompt);
                     } else {
                         console.error("Failed to retrieve transcript from server.");
