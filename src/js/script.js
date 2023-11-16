@@ -394,6 +394,14 @@ textarea.addEventListener('keydown', function(e) {
     }
 });
 
+document.querySelector('.input-container textarea').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); 
+        handleChatSubmit();
+    }
+});
+
+
 //Change score circle color
 function updateVideoScoreColor() {
     const scoreElement = document.querySelector('.video-score');
