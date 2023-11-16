@@ -178,6 +178,7 @@ function constructPrompt(data, transcript) {
 //Current driver function  for OpenAI API
 function compute() {
     toggleDisplay('chatbox');
+    clearChatHistory();
     clearConversationHistory();
     const urlInput = document.getElementById('url');
     const url = urlInput.value;
@@ -310,8 +311,12 @@ function handleChatSubmit() {
     
         const updatedTypingIndicator = document.querySelector('.typing-indicator');
         const updatedGptMessage = document.querySelector('.gpt-message:not(.typing-indicator)');
-        updatedTypingIndicator.style.display = 'none';
+        if (updatedTypingIndicator) {
+            updatedTypingIndicator.style.display = 'none';
+        }
+        if (updatedGptMessage){
         updatedGptMessage.style.display = 'block';
+        }
         
         addMessageToChat('gpt', data.answer);
         
