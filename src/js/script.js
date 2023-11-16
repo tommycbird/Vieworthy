@@ -182,6 +182,7 @@ function compute() {
     clearConversationHistory();
     const urlInput = document.getElementById('url');
     const url = urlInput.value;
+    document.getElementById('url').value = '';
     
     console.log("URL:", url);
     console.log("Extracting data from URL");
@@ -317,7 +318,7 @@ function handleChatSubmit() {
         if (updatedGptMessage){
         updatedGptMessage.style.display = 'block';
         }
-        
+
         addMessageToChat('gpt', data.answer);
         
         // Hide the typing indicator
