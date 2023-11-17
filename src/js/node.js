@@ -23,9 +23,30 @@ app.use(cors());
 // Serve static files from the 'Vieworthy' directory
 app.use(express.static(path.join(__dirname, '../../')));
 
-//API Key for OpenAI
-process.env.OPENAI_API_KEY = 'a';
-const openai = new OpenAIApi({ key: process.env.OPENAI_API_KEY });
+
+const AWS = require('aws-sdk');
+AWS.config.update({ region: 'us-east-2' });
+const ssm = new AWS.SSM();
+
+let openai;
+
+(async () => {
+  try {
+    const data = await ssm.getParameter({
+      Name: 'GPT-API-KEY',
+      WithDecryption: true
+    }).promise();
+
+    // Set the retrieved API key as the environment variable
+    process.env.OPENAI_API_KEY = data.Parameter.Value;
+    // Initialize the OpenAI API with the retrieved API key
+    openai = new OpenAIApi({ key: process.env.OPENAI_API_KEY });
+  } catch (err) {
+    console.error(err, err.stack);
+    
+    
+  }
+})();
 
 
 //List to save the conversation history into
