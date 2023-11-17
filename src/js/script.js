@@ -25,6 +25,7 @@ function fetchVideoData(url) {
              'Connection': 'keep-alive'
      };
 
+    showSpinner("Loading Basic Video Data....")
     return new Promise((resolve, reject) => {
         fetch(videoApiUrl)
             .then(response => response.json())
@@ -54,6 +55,7 @@ function fetchVideoData(url) {
                             reject(error);
                         });
 
+                        updateStatus("Loading Comments....")
                         // Fetch comments
                         fetch(commentApiUrl)
                             .then(commentResponse => commentResponse.json())
@@ -70,7 +72,8 @@ function fetchVideoData(url) {
                                 console.error("Failed to fetch comments:", commentError);
                                 resolve(details);  
                         });
-                
+                    
+                    updateStatus("Loading Dislikes....")
                     //Fetch dislikes
                     fetch(dislikeApiUrl,  {
                         method: 'GET',
@@ -204,6 +207,7 @@ function compute() {
             }
             console.log("Video details", details);
 
+            updateStatus("Fetching Transcript....")
             // If duration is okay, fetch the transcript
             getSeleniumInfo(url)
                 .then(transcript => {
@@ -250,6 +254,7 @@ async function getSeleniumInfo(url) {
     })
     .then(response => response.json())
     .then(data => {
+        hideSpinner();
         return data.transcript;
     });
 }
@@ -265,10 +270,12 @@ function fetchGPT(prompt) {
         body: JSON.stringify({ prompt: "I am now going to pass in metadata associated with a youtube video. I do not need any information back on this please respond 'ok got it' to this query" + prompt })
     })
     .then(response => response.json())
+    
     .catch(error => {
         console.error('Error getting response from GPT:', error);
     });
 }
+
 
 //======================================================================================================================================================
 
@@ -379,7 +386,6 @@ function addMessageToChat(role, content, isPlaceholder = false) {
     chatContainer.scrollTop = chatContainer.scrollHeight; 
 }
 
-document.querySelector('.input-container button').addEventListener('click', handleChatSubmit);
 
 //======================================================================================================================================================
 
@@ -400,6 +406,20 @@ document.querySelector('.input-container textarea').addEventListener('keydown', 
         handleChatSubmit();
     }
 });
+
+function showSpinner(message) {
+    document.getElementById('spinner-wrapper').style.display = 'flex';
+    updateStatus(message);
+}
+
+function hideSpinner() {
+    document.getElementById('spinner-wrapper').style.display = 'none';
+}
+
+function updateStatus(message) {
+    document.getElementById('status-text').textContent = message;
+}
+// module.exports = { updateStatus };
 
 
 //Change score circle color

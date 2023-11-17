@@ -42,7 +42,7 @@ async function scrollUntilElement(driver, xpath) {
       if (element) {
         let isDisplayed = await element.isDisplayed();
         if (isDisplayed) {
-          break; // If the element is displayed, we can break out of the loop
+          break; 
         }
       }
     } catch (error) {
@@ -76,19 +76,22 @@ async function getTranscript(link) {
     console.log('Navigating to link:', link);
     await driver.get(link);
     console.log('Page loaded');
+    // updateStatus("Page Loaded");
 
     console.log('Waiting for description container...');
     await driver.wait(until.elementLocated(By.xpath('//*[@id="expand"]')), 30000);
     console.log('Description container loaded');
 
+    // updateStatus("Navigating to Description....");
     console.log('Clicking on description container...');
     await driver.findElement(By.xpath('//*[@id="expand"]')).click();
     console.log('Clicked description container');
 
+
     console.log('Waiting after click...');
     await new Promise(resolve => setTimeout(resolve, 3000));
 
-    console.log('Scrolling to transcript...');
+    // updateStatus("Scrolling to transcript...");
     await scrollUntilElement(driver, '//*[@id="primary-button"]/ytd-button-renderer/yt-button-shape/button');
     console.log('Scrolled to transcript');
 
@@ -96,11 +99,14 @@ async function getTranscript(link) {
     let button = await driver.findElement(By.xpath('//*[@id="primary-button"]/ytd-button-renderer/yt-button-shape/button'));
     await driver.executeScript("arguments[0].click();", button);
     console.log('Clicked "show transcript" button');
+    // updateStatus("Loading Transcript....");
+
 
     console.log('Waiting after click...');
     await new Promise(resolve => setTimeout(resolve, 3000));
 
     console.log('Fetching transcript lines...');
+    // updateStatus("Reading in Transcript....");
     let transcriptElements = await driver.findElements(By.className('segment style-scope ytd-transcript-segment-renderer'));
     for(let i = 0; i < transcriptElements.length; i++){
       let line = formatTranscript(await transcriptElements[i].getAttribute('aria-label'));
