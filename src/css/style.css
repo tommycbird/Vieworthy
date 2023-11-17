@@ -158,15 +158,16 @@ button {
 .form {
   border: 1px solid white;
   background-color: black;
-  font-size: 1.5vw;
+  font-size: 1vw;
   color: white;
   resize: none;
-  width: 20vw;
+  width: 30vw;
   height: 100%; 
   display: flex; 
   align-items: center; 
   justify-content: center;
   box-sizing: border-box;
+  margin-left: 5vw;
 }
 
 .summarize-button {
@@ -178,7 +179,7 @@ button {
   font-size: 1.5vh;
   font-weight: bold;
   border-radius: 1px;
-  width: 10vw;
+  width: 5vw;
   height: 100%;
   box-sizing: border-box;
 }
