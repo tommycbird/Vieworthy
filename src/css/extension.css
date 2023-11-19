@@ -1,4 +1,4 @@
-.summarize-button {
+.assess-button {
     border-radius: 12px;
     padding: 8px 16px;
     display: flex;
@@ -13,6 +13,243 @@
     cursor: pointer;
 }
 
-.summarize-button:hover {
+.assess-button:hover {
     background-color: #3f3f3f;
 }
+
+
+
+.popup {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75vw;
+    height: 60vh;
+    background-color: rgb(0, 0, 0);
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 20px 20px rgba(255, 0, 0, 0.1);
+    flex-direction: column;
+    justify-content: space-between;
+} 
+
+button {
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  color: black;
+  background: transparent;
+}
+
+.video-score {
+    position: absolute;
+    top: -30px; /* Adjust as needed */
+    left: -30px; /* Adjust as needed */
+    color: white;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 30px;
+    width: 80px; /* Diameter of the circle */
+    height: 80px; /* Diameter of the circle */
+    border-radius: 50%; /* Makes it a circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background-color: greenyellow; /* Temporary, will be set by JS */
+    text-shadow: -0.1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* Black outline effect */
+  }
+  
+  
+  /* popup Content */
+  .popup-content {
+    background-color: #323232;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+    color: black;
+  }
+  
+  /* Close Button */
+  .close-button {
+    position: absolute;
+    right: 0%;
+    top: 0%;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+  }
+  
+  .close-button:hover {
+    color: #ff7171;
+  }
+  
+  .chat-container {
+    margin: 20px auto;
+    border: 3px solid rgb(24, 24, 24);
+    height: 80%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #242424;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .typing-indicator {
+    display: none;
+    width: 30px;
+    height: 10px;
+    text-align: center;
+  }
+  
+  .typing-indicator span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: #ffffff; 
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: bounce 1s infinite alternate;
+  }
+  
+  .typing-indicator span:nth-child(1) {
+    left: 0;
+    animation-delay: 0s;
+  }
+  
+  .typing-indicator span:nth-child(2) {
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: 0.25s;
+  }
+  
+  .typing-indicator span:nth-child(3) {
+    right: 0;
+    animation-delay: 0.5s;
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  .message {
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px 0;
+    max-width: 70%;
+    word-wrap: break-word;
+    display: flex;
+    align-items: center;
+  }
+  
+  .message-logo {
+    height: 30px;
+    width: 30px;
+    margin-right: 5px;
+    align-self: center;
+  }
+  
+  .message-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-message-container {
+    justify-content: flex-end;
+  }
+  
+  .gpt-message-container {
+    justify-content: flex-start;
+  }
+  
+  .message {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    max-width: 70%;
+  }
+  
+  .prompt-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 32vh;
+  }
+  
+  .prompt {
+    flex-basis: 32%; 
+    padding: 10px 10px;
+    margin: 5px 0;
+    border: 1px dashed rgb(255, 255, 255);
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+    margin-bottom: 20vh;
+  }
+  
+  .gpt-message {
+    background-color: #e0e0e0; 
+    font-size: medium;
+    color: black;
+  }
+  
+  .user-message {
+    background-color: #3498db; 
+    font-size: large;
+    color: white;
+  }
+  
+  .input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .input-container textarea {
+    width: 100%;
+    font-size: medium;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    color: white;
+    margin-right: 5%;
+    resize: none;
+    background: black;
+  }
+  
+  .input-container button {
+    background-color: var(--softred);
+    width: 20%;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .input-container button:hover {
+    background-color: rgb(255, 255, 255);
+    color: var(--softred);
+  }
+  
+  .input-container textarea::placeholder {
+    vertical-align: middle;
+    font-size: 16px;
+  }
+  
+
+
+  
+  
+

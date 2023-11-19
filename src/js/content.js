@@ -7,6 +7,64 @@ function injectCSS() {
     document.head.appendChild(link);
 }
 
+function killPopup() {
+    console.log("Killing Popup...");
+    var popup = document.getElementById('popup');
+    // Check if the element actually exists
+    if (popup!=null) {
+        popup.remove();
+        console.log('Popup removed.');
+    } else {
+        // If the element is null, log an error message
+        console.log('Error: Tried to remove a popup that does not exist.');
+    }
+}
+
+function insertPopup(key, sentence, entryID) {
+    console.log("Rendering Popup...");
+    // Fetch the content of popup.html
+    fetch(chrome.runtime.getURL('../popup.html'))
+        .then(response => response.text())
+        .then(data => {
+        // Create a new div element
+        const popup = document.createElement('div');
+        //popup.className = 'popup-container';
+
+        // Set the innerHTML of the div to the fetched data
+        popup.innerHTML = data;
+
+        // Append the popup to the body
+        document.body.appendChild(popup);
+
+        popup.id = 'popup';
+
+        // Make sure your popup is visible and on the forefront
+        popup.style.zIndex = 2147483647; // Example z-index, it should be higher than other elements
+        popup.style.width = '100vw';
+        popup.style.height = '100vh';
+        popup.style.position = 'fixed'; // So that it stays in the viewport
+
+
+
+        // Add event listeners to the close button and toggle button
+        popup.querySelector('.close-button').addEventListener('click', killPopup);
+        
+            
+        // Set definition parameters and overwrite
+        // const headerElement = popup.querySelector('.modal-header');
+        // const textElement = popup.querySelector('.modal-text');
+
+        // Change the text content
+        // headerElement.textContent = capitalized(key);
+
+    })
+        .catch(error => {
+        // Handle any errors that occurred during fetch
+        console.error('Error loading the popup:', error);
+    });
+}
+
+
 function injectButton() {
   console.log("Injecting HTML...");
   injectCSS();
@@ -31,20 +89,34 @@ function injectButton() {
           // If the video duration is less than 5 minutes, skip to the next iteration
           if (totalMinutes < 5) return;
 
+          //Move upwards to find the nearest parent with id="thumbnail" to get video link
+          let thumbnail = timeElement.parentElement;
+          while (thumbnail && thumbnail.id !== "thumbnail") {
+            thumbnail = thumbnail.parentElement;
+          }
+          
+          
+
           // Move upwards to find the nearest parent with id="content"
           let contentParent = timeElement.parentElement;
           while (contentParent && contentParent.id !== "content") {
               contentParent = contentParent.parentElement;
           }
 
-          if (contentParent && !contentParent.querySelector(':scope > .summarize-button')) {              
+          if (contentParent && !contentParent.querySelector(':scope > .assess-button')) {              
               // Create the button
               const sumButton = document.createElement('button');
               sumButton.innerText = 'Assess';
-              sumButton.className = 'summarize-button';
-
-              // Round the rectangle
-              
+              sumButton.className = 'assess-button';
+            //    let lk = document.getElementById(thumbnail).href;
+            //    console.log(lk);
+              // Button event listener
+              sumButton.addEventListener('click', function(event) {
+                console.log('Summarize button clicked');
+                // Call insertPopupContainer when the button is clicked
+                insertPopup();
+                console.log(thumbnail.href);
+              });
 
               // Create the logo element
               const img = document.createElement('img');
@@ -61,7 +133,7 @@ function injectButton() {
                   contentParent.style.position = 'relative';
               }
 
-
+              
               // Append the button to the content parent
               contentParent.appendChild(sumButton);
           }
@@ -69,8 +141,11 @@ function injectButton() {
   }
 }
 
+
+
 // Run the function to inject the summarize button
 injectButton();
+
 
 // Since YouTube uses a lot of AJAX, run the function every time the DOM changes
 const observer = new MutationObserver(injectButton);

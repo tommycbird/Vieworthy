@@ -19,7 +19,7 @@
     },
     "web_accessible_resources": [
         {
-            "resources": ["src/*"],
+            "resources": ["src/*", "popup.html"],
             "matches": ["<all_urls>"],
             "extension_ids": ["*"]
         }

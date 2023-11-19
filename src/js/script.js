@@ -174,16 +174,21 @@ function constructPrompt(data, transcript) {
 }
 
 //======================================================================================================================================================
-
-//Current driver function  for OpenAI API
-function compute() {
+//Driver function for Vieworthy Website: Extracts url and calls main compute function
+function computeWeb(){
     toggleDisplay('chatbox');
     clearChatHistory();
     clearConversationHistory();
     const urlInput = document.getElementById('url');
     const url = urlInput.value;
     document.getElementById('url').value = '';
-    
+    compute(url);
+}
+
+//======================================================================================================================================================
+
+//Current driver function  for OpenAI API
+function compute(url) {
     console.log("URL:", url);
     console.log("Extracting data from URL");
     const videoID = extractVideoID(url);
