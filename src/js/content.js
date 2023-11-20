@@ -1,3 +1,10 @@
+var s = document.createElement('script');
+s.src = chrome.runtime.getURL('src/js/script.js');
+s.onload = function() {
+    this.remove();
+};
+(document.head || document.documentElement).appendChild(s);
+
 function injectCSS() {
     console.log("Injecting CSS...");
     const link = document.createElement('link');
@@ -115,7 +122,7 @@ function injectButton() {
                 console.log('Summarize button clicked');
                 // Call insertPopupContainer when the button is clicked
                 insertPopup();
-                console.log(thumbnail.href);
+                compute(thumbnail.href);
               });
 
               // Create the logo element

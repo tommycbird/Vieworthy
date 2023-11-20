@@ -396,12 +396,12 @@ function addMessageToChat(role, content, isPlaceholder = false) {
 
 
 // EVENT LISTENERS ======================================================================================================================================
-// Enter button pressed
+
 const textarea = document.querySelector('.form');
 textarea.addEventListener('keydown', function(e) {
     if (e.keyCode === 13) {
         e.preventDefault();  
-        compute();
+        computeWeb();
     }
 });
 
@@ -424,8 +424,6 @@ function hideSpinner() {
 function updateStatus(message) {
     document.getElementById('status-text').textContent = message;
 }
-// module.exports = { updateStatus };
-
 
 //Change score circle color
 function updateVideoScoreColor() {

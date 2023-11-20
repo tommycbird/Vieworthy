@@ -11,7 +11,8 @@
     "content_scripts": [
       {
         "matches": ["https://www.youtube.com/*"],
-        "js": ["src/js/content.js"]
+        "js": ["src/js/content.js", "src/js/script.js", "src/js/get_transcript.js", "src/js/node.js"],
+        "css": ["src/css/extension.css"]
       }
     ],
     "icons": {
@@ -24,8 +25,12 @@
             "extension_ids": ["*"]
         }
     ],
+    "extension_ids": [
+        "*"
+    ],
     "action": {
       "default_popup": "mini.html"
+      
     }
     
 }
