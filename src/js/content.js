@@ -45,24 +45,17 @@ function insertPopup(key, sentence, entryID) {
 
         popup.id = 'popup';
 
-        // Make sure your popup is visible and on the forefront
-        popup.style.zIndex = 2147483647; // Example z-index, it should be higher than other elements
+        // Make popup visible and on the forefront
+        popup.style.zIndex = 2147483647;
         popup.style.width = '100vw';
         popup.style.height = '100vh';
         popup.style.position = 'fixed'; // So that it stays in the viewport
+        popup.style.backdropFilter = 'blur(10px)';
 
 
 
         // Add event listeners to the close button and toggle button
         popup.querySelector('.close-button').addEventListener('click', killPopup);
-        
-            
-        // Set definition parameters and overwrite
-        // const headerElement = popup.querySelector('.modal-header');
-        // const textElement = popup.querySelector('.modal-text');
-
-        // Change the text content
-        // headerElement.textContent = capitalized(key);
 
     })
         .catch(error => {
@@ -115,8 +108,7 @@ function injectButton() {
               const sumButton = document.createElement('button');
               sumButton.innerText = 'Assess';
               sumButton.className = 'assess-button';
-            //    let lk = document.getElementById(thumbnail).href;
-            //    console.log(lk);
+
               // Button event listener
               sumButton.addEventListener('click', function(event) {
                 console.log('Summarize button clicked');
