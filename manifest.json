@@ -6,7 +6,9 @@
     "author": "vieworthy@gmail.com",
     "permissions": [
       "activeTab",
-      "webNavigation"
+      "scripting",
+      "webNavigation",
+      "storage"
     ],
     "content_scripts": [
       {

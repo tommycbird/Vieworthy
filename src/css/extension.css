@@ -220,19 +220,22 @@ button {
   
   .prompt-container {
     display: flex;
+    font-size: 18px;
     justify-content: space-between;
     gap: 10px;
-    margin-top: 32vh;
+    margin-top: 40vh;
   }
   
   .prompt {
+    font-size: 18px;
     flex-basis: 32%; 
     padding: 10px 10px;
     margin: 5px 0;
     border: 1px dashed rgb(255, 255, 255);
     border-radius: 10px;
     color: rgb(255, 255, 255);
-    margin-bottom: 20vh;
+    margin-bottom: 0vh;
+    height: 5vh;
   }
   
   .gpt-message {

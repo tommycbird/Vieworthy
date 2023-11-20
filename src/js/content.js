@@ -6,7 +6,6 @@ s.onload = function() {
 (document.head || document.documentElement).appendChild(s);
 
 function injectCSS() {
-    console.log("Injecting CSS...");
     const link = document.createElement('link');
     link.href = chrome.runtime.getURL('src/css/extension.css');
     link.type = 'text/css';
@@ -67,13 +66,12 @@ function insertPopup(key, sentence, entryID) {
 
 
 function injectButton() {
-  console.log("Injecting HTML...");
   injectCSS();
 
   if (window.location.hostname === 'www.youtube.com') {
       const timeElements = document.querySelectorAll('span[id="text"].style-scope.ytd-thumbnail-overlay-time-status-renderer');
 
-      console.log(`Found ${timeElements.length} time elements.`);
+      //console.log(`Found ${timeElements.length} time elements.`);
 
       timeElements.forEach(timeElement => {
           let totalMinutes = 0;
@@ -88,7 +86,7 @@ function injectButton() {
           }
 
           // If the video duration is less than 5 minutes, skip to the next iteration
-          if (totalMinutes < 5) return;
+          if (totalMinutes < 5 || totalMinutes > 15) return;
 
           //Move upwards to find the nearest parent with id="thumbnail" to get video link
           let thumbnail = timeElement.parentElement;
@@ -140,8 +138,6 @@ function injectButton() {
       });
   }
 }
-
-
 
 // Run the function to inject the summarize button
 injectButton();

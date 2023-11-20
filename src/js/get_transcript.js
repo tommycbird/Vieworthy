@@ -1,5 +1,5 @@
 const {Builder, Browser, By, until} = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome'); 
+const chromeDriver = require('selenium-webdriver/chrome'); 
 
 function formatTranscript(istring) {
   const parts = istring.split(' ');
@@ -61,7 +61,7 @@ async function scrollUntilElement(driver, xpath) {
 
 async function getTranscript(link) {
   let transcript = []; //storage for transcript
-  let chromeOptions = new chrome.Options();
+  let chromeOptions = new chromeDriver.Options();
   chromeOptions.addArguments('--headless=new');
   chromeOptions.addArguments('--no-sandbox');
   chromeOptions.addArguments('--disable-dev-shm-usage');

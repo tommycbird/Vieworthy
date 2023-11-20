@@ -436,28 +436,43 @@ function addMessageToChat(role, content, isPlaceholder = false) {
 // EVENT LISTENERS ======================================================================================================================================
 
 const textarea = document.querySelector('.form');
-textarea.addEventListener('keydown', function(e) {
-    if (e.keyCode === 13) {
-        e.preventDefault();  
-        computeWeb();
-    }
-});
+if(textarea){ 
+    textarea.addEventListener('keydown', function(e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();  
+            computeWeb();
+        }
+    });
+}
 
-document.querySelector('.input-container textarea').addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault(); 
-        handleChatSubmit();
-    }
-});
-
+const chatArea = document.querySelector('.input-container textarea')
+if(chatArea){
+    chatArea.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); 
+            handleChatSubmit();
+        }
+    });
+}
 function showSpinner(message) {
-    document.getElementById('spinner-wrapper').style.display = 'flex';
-    updateStatus(message);
+    var spinner = document.getElementById('spinner-wrapper');
+    if (spinner) {
+        spinner.style.display = 'flex';
+        updateStatus(message);
+    } else {
+        console.log("Spinner element not found");
+    }
 }
 
 function hideSpinner() {
-    document.getElementById('spinner-wrapper').style.display = 'none';
+    var spinner = document.getElementById('spinner-wrapper');
+    if (spinner) {
+        spinner.style.display = 'none';
+    } else {
+        console.log("Spinner element not found");
+    }
 }
+
 
 function updateStatus(message) {
     document.getElementById('status-text').textContent = message;
