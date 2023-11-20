@@ -1,4 +1,6 @@
 
+const https = require('https');
+const fs = require('fs');
 const express = require('express');
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const bodyParser = require('body-parser');
@@ -13,8 +15,9 @@ const getTranscript = require('./get_transcript');
 
 // Configuration
 const CONFIG = {
-    API_ENDPOINT: 'http://3.23.48.138:3000'
+    API_ENDPOINT: 'https://vieworthy.com'
 };
+
 
 // Middleware variables
 app.use(bodyParser.json());
@@ -43,6 +46,7 @@ let openai;
     openai = new OpenAIApi({ key: process.env.OPENAI_API_KEY });
   } catch (err) {
     console.error(err, err.stack);
+
     
     
   }

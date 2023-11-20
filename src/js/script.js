@@ -1,7 +1,7 @@
 
 //For using with endpoints later in the program
 const CONFIG = {
-    API_ENDPOINT: 'http://3.23.48.138:3000'
+    API_ENDPOINT: 'https://vieworthy.com'
 };
 // Fetches title, description, likes and comments using YouTube API
 function fetchVideoData(url) {
@@ -185,7 +185,46 @@ function computeWeb(){
     const urlInput = document.getElementById('url');
     const url = urlInput.value;
     document.getElementById('url').value = '';
-    compute(url);
+    
+    console.log("URL:", url);
+    console.log("Extracting data from URL");
+    const videoID = extractVideoID(url);
+    if (!videoID) {
+        console.log("Invalid URL input");
+        return;
+    }
+
+    let prompt = "I am going to pass in text data about a given YouTube video and I will ask you questions from the data";
+
+    // First, fetch the video data to check the duration
+    fetchVideoData(url)
+        .then(details => {
+            // Check video duration
+            if (isVideoTooLong(details.duration)) {
+                console.log("Video is too long (over 15 minutes).");
+                return; 
+            }
+            console.log("Video details", details);
+
+            updateStatus("Fetching Transcript....")
+            // If duration is okay, fetch the transcript
+            getSeleniumInfo(url)
+                .then(transcript => {
+                    if (transcript) {
+                        prompt += constructPrompt(details, transcript);
+                        console.log("Prompt", prompt);
+                        fetchGPT(prompt);
+                    } else {
+                        console.error("Failed to retrieve transcript from server.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching transcript:", error);
+                });
+        })
+        .catch(error => {
+            console.error('Error fetching video data:', error);
+        });
 }
 
 //======================================================================================================================================================
