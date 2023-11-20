@@ -13,7 +13,7 @@ const getTranscript = require('./get_transcript');
 
 // Configuration
 const CONFIG = {
-    API_ENDPOINT: 'http://3.23.48.138:3000'
+    API_ENDPOINT: 'https://vieworthy.com'
 };
 
 // Middleware variables
