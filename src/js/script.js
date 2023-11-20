@@ -1,4 +1,3 @@
-
 //For using with endpoints later in the program
 const CONFIG = {
     API_ENDPOINT: 'https://vieworthy.com'
@@ -395,7 +394,7 @@ function addMessageToChat(role, content, isPlaceholder = false) {
     
     if (role === 'gpt') {
         const logo = document.createElement('img');
-        logo.src = "/src/img/logo_light.png";
+        logo.src = "https://vieworthy.com/src/img/logo_light.png";
         logo.className = "message-logo";
         logo.style.width = '30px';
         logo.style.height = '24px';

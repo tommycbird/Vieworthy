@@ -25,12 +25,7 @@
             "extension_ids": ["*"]
         }
     ],
-    "extension_ids": [
-        "*"
-    ],
     "action": {
       "default_popup": "mini.html"
-      
     }
-    
 }

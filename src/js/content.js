@@ -51,8 +51,9 @@ function insertPopup(key, sentence, entryID) {
         popup.style.height = '100vh';
         popup.style.position = 'fixed'; // So that it stays in the viewport
         popup.style.backdropFilter = 'blur(10px)';
-
-
+        popup.style.display = 'flex';
+        popup.style.justifyContent = 'center';
+        popup.style.alignItems = 'center';
 
         // Add event listeners to the close button and toggle button
         popup.querySelector('.close-button').addEventListener('click', killPopup);
