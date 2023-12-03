@@ -281,7 +281,7 @@ function isVideoTooLong(duration) {
     const seconds = (match[3]) ? parseInt(match[3].slice(0, -1)) : 0;
 
     const totalMinutes = hours * 60 + minutes + seconds / 60;
-    return totalMinutes > 15;
+    return totalMinutes > 30;
 }
 
 //======================================================================================================================================================
