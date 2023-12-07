@@ -1,114 +1,136 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head>
-    <link rel="stylesheet" type="text/css" href="src/css/style.css">
-    <link rel="icon" type="image/x-icon" href="src/img/favicon.png">
-    <link href="https://fonts.cdnfonts.com/css/open-sauce-one" rel="stylesheet">
+  <head>
+    <link rel="stylesheet" type="text/css" href="src/css/style.css" />
+    <link rel="icon" type="image/x-icon" href="src/img/favicon.png" />
+    <link
+      href="https://fonts.cdnfonts.com/css/open-sauce-one"
+      rel="stylesheet"
+    />
     <script src="src/js/script.js" defer></script>
     <style>
-        @import url('https://fonts.cdnfonts.com/css/open-sauce-one');
+      @import url("https://fonts.cdnfonts.com/css/open-sauce-one");
     </style>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <!-- Tabs for navigation -->
     <div class="tabs">
+<<<<<<< HEAD
         <button id="home-tab" onclick="showPage('home')">Home</button>
         <button id="install-tab" onclick="showPage('install')">Install</button>
         <button id="instruct-tab" onclick="showPage('instruct')">Instructions</button>
+=======
+      <button id="home-tab" onclick="showPage('home')">Home</button>
+      <button id="install-tab" onclick="showPage('install')">Install</button>
+>>>>>>> db362536d484ead6306fa99b9036675e7ceb96a9
     </div>
 
     <!--====================== Home page  ======================-->
     <div id="home" class="page-content">
+      <div class="icon-text-container">
+        <a href="#">
+          <div class="icon">
+            <img src="src/img/logo_light.png" alt="Icon" />
+          </div>
+        </a>
+        <div class="text">
+          <div class="big-text">Vieworthy</div>
+          <div class="small-text">Never waste a click</div>
+        </div>
+      </div>
 
-        <div class="icon-text-container">
-            <a href=#>
-                <div class="icon">
-                    <img src="src/img/logo_light.png" alt="Icon" />
-                </div>
-            </a>
-            <div class="text">
-                <div class="big-text">Vieworthy</div>
-                <div class="small-text">Never waste a click</div>
-            </div>
+      <!-- YouTube URL Input -->
+      <div id="input" class="active-element">
+        <div class="main">
+          <div class="form-group">
+            <textarea
+              id="url"
+              class="form"
+              placeholder="Video URL..."
+            ></textarea>
+            <button onclick="computeWeb()" class="summarize-button">GO</button>
+          </div>
         </div>
-        
-        <!-- YouTube URL Input -->
-        <div id = "input" class ="active-element">
-            <div class="main">
-                <div class="form-group">
-                    <textarea id="url" class="form" placeholder="Video URL..."></textarea>
-                    <button onclick="computeWeb()" class="summarize-button">
-                        GO
-                    </button>
-                </div>
-            </div>
-        </div>
+      </div>
 
-        <!-- Pop-up -->
-        <div id = "chatbox" class ="active-element" style="display: none;">
-            <div class="popup">
-                <div id="spinner-wrapper" style="display:none;">
-                    <div class="loader"></div>
-                    <p id="status-text">Loading...</p>
-                </div>            
-                <div class="video-score">9.5</div>
-                <button class="close-button" onclick="toggleDisplay('input')">X</button>
-                <div class="chat-container">
-                    <div class="prompt-container">
-                        <div class="prompt">
-                            <span>When was the first time in the video that the NumPy library was mentioned?</span>
-                        </div>
-                        <div class="prompt">
-                            <span>Tell me about the reliability and accuracy of this video?</span>
-                        </div>
-                        <div class="prompt">
-                            <span>What is the like to dislike ratio on this video?</span>
-                        </div>
-                    </div>
-                    <div class="gpt-message typing-indicator">
-                        <span></span><span></span><span></span>
-                    </div>
-                    <div class="gpt-message">
-                        <span class="message-content"></span> 
-                    </div>
-                    <div class="user-message">
-                        <span class="message-content"></span>
-                    </div>
-                </div>
-                <div class="input-container">
-                    <textarea placeholder="Type your message..."></textarea>
-                    <button onclick="handleChatSubmit()">Submit</button>
-                </div>
+      <!-- Pop-up -->
+      <div id="chatbox" class="active-element" style="display: none">
+        <div class="popup">
+          <div id="spinner-wrapper" style="display: none">
+            <div class="loader"></div>
+            <p id="status-text">Loading...</p>
+          </div>
+          <div class="video-score">9.5</div>
+          <button class="close-button" onclick="toggleDisplay('input')">
+            X
+          </button>
+          <div class="chat-container">
+            <div class="prompt-container">
+              <div class="prompt">
+                <span
+                  >When was the first time in the video that the NumPy library
+                  was mentioned?</span
+                >
+              </div>
+              <div class="prompt">
+                <span
+                  >Tell me about the reliability and accuracy of this
+                  video?</span
+                >
+              </div>
+              <div class="prompt">
+                <span>What is the like to dislike ratio on this video?</span>
+              </div>
             </div>
+            <div class="gpt-message typing-indicator">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="gpt-message">
+              <span class="message-content"></span>
+            </div>
+            <div class="user-message">
+              <span class="message-content"></span>
+            </div>
+          </div>
+          <div class="input-container">
+            <textarea placeholder="Type your message..."></textarea>
+            <button onclick="handleChatSubmit()">Submit</button>
+          </div>
         </div>
+<<<<<<< HEAD
 
        
 
+=======
+      </div>
+>>>>>>> db362536d484ead6306fa99b9036675e7ceb96a9
     </div>
-
-
 
     <!--====================== Install page  ======================-->
     <div id="install" class="page-content hidden">
-        <div class="install-block">
-            <div class="install-left">
-                <h2>Get Vieworthy for Chrome!</h2>
-                <p>
-                    Discover the power of our Chrome extension, which allows you to assess any video on the youtube at the click of a button.
-                    
-                    Not sure if that 60 Minute video is worth your hour? No problem! Vieworthy will assess it for you in a matter of seconds.
-                </p>
-                <button class="install-button">Install Now</button>
-            </div>
-            <div class="install-right">
-                <img src="src/img/extension_preview.png" alt="Chrome Extension Preview" class="extension-image">
-            </div>
+      <div class="install-block">
+        <div class="install-left">
+          <h2>Get Vieworthy for Chrome!</h2>
+          <p>
+            Discover the power of our Chrome extension, which allows you to
+            assess any video on the youtube at the click of a button. Not sure
+            if that 60 Minute video is worth your hour? No problem! Vieworthy
+            will assess it for you in a matter of seconds.
+          </p>
+          <button class="install-button">Install Now</button>
         </div>
+        <div class="install-right">
+          <img
+            src="src/img/extension_preview.png"
+            alt="Chrome Extension Preview"
+            class="extension-image"
+          />
+        </div>
+      </div>
     </div>
 
+<<<<<<< HEAD
 
     <!--====================== Instructions Page  ======================-->
     <div id = "instruct"  class="page-content hidden">
@@ -121,27 +143,24 @@
         </div>
     </div>
 
+=======
+>>>>>>> db362536d484ead6306fa99b9036675e7ceb96a9
     <!--====================== Footer  ======================-->
-    <div class = "ghub-button">
-        <a href="https://github.com/tommycbird/Vieworthy">
-            <img src="src/img/ghub.png" class="ghub-img">
-        </a>
+    <div class="ghub-button">
+      <a href="https://github.com/tommycbird/Vieworthy">
+        <img src="src/img/ghub.png" class="ghub-img" />
+      </a>
     </div>
 
-    
     <script>
-        // To switch tabs
-        function showPage(pageId) {
-            var pages = document.getElementsByClassName('page-content');
-            for (var i = 0; i < pages.length; i++) {
-                pages[i].classList.add('hidden');
-            }
-            document.getElementById(pageId).classList.remove('hidden');
+      // To switch tabs
+      function showPage(pageId) {
+        var pages = document.getElementsByClassName("page-content");
+        for (var i = 0; i < pages.length; i++) {
+          pages[i].classList.add("hidden");
         }
-
+        document.getElementById(pageId).classList.remove("hidden");
+      }
     </script>
-
-
-</body>
-
+  </body>
 </html>
