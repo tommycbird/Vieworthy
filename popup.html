@@ -1,51 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="src/js/script.js" defer></script>
     <title>Document</title>
-</head>
-<body>
-    <div id = "chatbox" class ="active-element">
-        <div class="popup">
-            <div id="spinner-wrapper">
-                <div class="loader"></div>
-                <p id="status-text">Loading...</p>
-            </div> 
-            <div class="video-score">9.5</div>
-            <button class="close-button" onclick="toggleDisplay('input')">X</button>
-            <div class="chat-container">
-                <div class="prompt-container">
-                    <div class="prompt">
-                        <span>When was the first time in the video that the NumPy library was mentioned?</span>
-                    </div>
-                    <div class="prompt">
-                        <span>Tell me about the reliability and accuracy of this video?</span>
-                    </div>
-                    <div class="prompt">
-                        <span>What is the like to dislike ratio on this video?</span>
-                    </div>
-                </div>
-                <div class="gpt-message typing-indicator">
-                    <span></span><span></span><span></span>
-                </div>
-                <div class="gpt-message">
-                    <span class="message-content"></span> 
-                </div>
-                <div class="user-message">
-                    <span class="message-content"></span>
-                </div>
-            </div>
-            <div class="input-container">
-                <textarea placeholder="Type your message..."></textarea>
-                <button onclick="handleChatSubmit()">Submit</button>
-            </div>
+  </head>
+  <body>
+    <div id="chatbox" class="active-element">
+      <div class="popup">
+        <div id="spinner-wrapper">
+          <div class="loader"></div>
+          <p id="status-text">Loading...</p>
         </div>
- </div>
-
-</body>
+        <div class="video-score">9.5</div>
+        <button class="close-button" onclick="toggleDisplay('input')">X</button>
+        <div class="chat-container">
+          <div class="prompt-container">
+            <div class="prompt">
+              <span
+                >When was the first time in the video that the NumPy library was
+                mentioned?</span
+              >
+            </div>
+            <div class="prompt">
+              <span
+                >Tell me about the reliability and accuracy of this video?</span
+              >
+            </div>
+            <div class="prompt">
+              <span>What is the like to dislike ratio on this video?</span>
+            </div>
+          </div>
+          <div class="gpt-message typing-indicator">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="gpt-message">
+            <span class="message-content"></span>
+          </div>
+          <div class="user-message">
+            <span class="message-content"></span>
+          </div>
+        </div>
+        <div class="input-container">
+          <textarea placeholder="Type your message..."></textarea>
+          <button onclick="handleChatSubmit()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
-
-
-
