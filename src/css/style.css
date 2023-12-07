@@ -11,7 +11,7 @@
 body {
   background: black;
   color: white;
-  min-height: 100vh; 
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,18 +20,18 @@ body {
 p {
   font-size: 18px;
   line-height: 1.5;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-style: italic;
 }
 
 a {
-  color: inherit; 
+  color: inherit;
   text-decoration: none;
 }
 
 a:hover {
   color: lightgray;
-  text-decoration: none; 
+  text-decoration: none;
 }
 
 a:active {
@@ -47,20 +47,17 @@ a:active {
   overflow: hidden;
 }
 
-
 /* ========================================================
   HEADER
 ======================================================== */
 
-
-
 .tabs {
   margin-top: 50px;
   position: fixed;
-  top: 0; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  background-color: rgba(255, 255, 255, 0.6); 
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.6);
   z-index: 1000;
   border-radius: 5px;
 }
@@ -75,7 +72,7 @@ a:active {
 
 .tabs button:hover {
   background-color: rgba(255, 255, 255, 0.8);
-  color: var(--darkergray)
+  color: var(--darkergray);
 }
 
 .tabs button:last-child {
@@ -90,8 +87,8 @@ a:active {
 
 .icon img {
   width: 160px;
-  height: 120px; 
-  margin-right: 10px; 
+  height: 120px;
+  margin-right: 10px;
 }
 
 .text {
@@ -100,14 +97,14 @@ a:active {
 }
 
 .big-text {
-  font-size: 50px; 
-  font-weight: bold; 
-  margin-bottom: 3px; 
+  font-size: 50px;
+  font-weight: bold;
+  margin-bottom: 3px;
 }
 
 .small-text {
-  font-size: 30px; 
-  color: #999; 
+  font-size: 30px;
+  color: #999;
 }
 
 button {
@@ -121,7 +118,7 @@ button {
 
 .page-content {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
@@ -130,7 +127,7 @@ button {
 
 .active-element {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   flex-direction: column;
 }
@@ -146,7 +143,7 @@ button {
   height: 15vh;
   width: 100%;
 }
-  
+
 .form-group {
   display: flex;
   flex-direction: row;
@@ -162,9 +159,9 @@ button {
   color: white;
   resize: none;
   width: 30vw;
-  height: 100%; 
-  display: flex; 
-  align-items: center; 
+  height: 100%;
+  display: flex;
+  align-items: center;
   justify-content: center;
   box-sizing: border-box;
   margin-left: 5vw;
@@ -184,11 +181,9 @@ button {
   box-sizing: border-box;
 }
 
-
 .description {
   margin-bottom: 10px;
 }
-
 
 /* The popup (background) */
 .popup {
@@ -207,12 +202,12 @@ button {
 
 .video-score {
   position: absolute;
-  top: -30px; 
-  left: -30px; 
+  top: -30px;
+  left: -30px;
   color: white;
-  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-size: 30px;
-  width: 80px; 
+  width: 80px;
   height: 80px;
   border-radius: 50%; /* Makes it a circle */
   display: flex;
@@ -220,9 +215,12 @@ button {
   justify-content: center;
   font-weight: bold;
   background-color: greenyellow;
-  text-shadow: -0.1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* Black outline */
+  text-shadow:
+    -0.1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000; /* Black outline */
 }
-
 
 /* popup Content */
 .popup-content {
@@ -230,7 +228,7 @@ button {
   margin: 10% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; 
+  width: 80%;
   color: black;
 }
 
@@ -246,7 +244,7 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  z-index: 10; 
+  z-index: 10;
 }
 
 .loader {
@@ -259,8 +257,12 @@ button {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 #status-text {
@@ -308,7 +310,7 @@ button {
   display: inline-block;
   width: 6px;
   height: 6px;
-  background-color: #ffffff; 
+  background-color: #ffffff;
   border-radius: 50%;
   margin: 0 2px;
   animation: bounce 1s infinite alternate;
@@ -331,10 +333,11 @@ button {
 }
 
 @keyframes bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
-  
+
   50% {
     transform: translateY(-5px);
   }
@@ -385,7 +388,7 @@ button {
 }
 
 .prompt {
-  flex-basis: 32%; 
+  flex-basis: 32%;
   padding: 10px 10px;
   margin: 5px 0;
   border: 1px dashed rgb(255, 255, 255);
@@ -395,13 +398,13 @@ button {
 }
 
 .gpt-message {
-  background-color: #e0e0e0; 
+  background-color: #e0e0e0;
   font-size: medium;
   color: black;
 }
 
 .user-message {
-  background-color: #3498db; 
+  background-color: #3498db;
   font-size: large;
   color: white;
 }
@@ -443,72 +446,68 @@ button {
   font-size: 16px;
 }
 
-
 /* ========================================================
   INSTALL PAGE
 ======================================================== */
 
 .install-block {
-    margin-left: 10%;
-    margin-right: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    margin-top: 50px;
+  margin-left: 10%;
+  margin-right: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 50px;
 }
-
 
 .install-left,
 .install-right {
-    display: flex;
-    justify-content: center;
-    vertical-align: top;
-    flex-direction: column;
-    width: 48%;
-    padding: 5%;
+  display: flex;
+  justify-content: center;
+  vertical-align: top;
+  flex-direction: column;
+  width: 48%;
+  padding: 5%;
 }
 
 .install-button {
-    display: inline-block;
-    background-color: var(--softred);
-    color: var(--main-text-color);
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 20px;
+  display: inline-block;
+  background-color: var(--softred);
+  color: var(--main-text-color);
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
 }
 
 .extension-image {
-    width: 40vw;
-    border-radius: 15px;
+  width: 40vw;
+  border-radius: 15px;
 }
-
 
 /* ========================================================
   FOOTER
 ======================================================== */
 
 .ghub-button {
-  position: fixed; 
-  bottom: 20px; 
-  right: 20px; 
-  padding: 10px 12px; 
-  background-color: #444; 
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 12px;
+  background-color: #444;
   color: #fff;
-  border: none; 
+  border: none;
   border-radius: 5px;
   cursor: pointer;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 .ghub-button:hover {
   background-color: #777;
 }
-
 
 .ghub-img {
   width: 40px;
