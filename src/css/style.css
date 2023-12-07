@@ -487,6 +487,16 @@ button {
     border-radius: 15px;
 }
 
+.instruct-block {
+  margin-left: 10%;
+  margin-right: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 50px;
+}
+
 
 /* ========================================================
   FOOTER

@@ -86,7 +86,7 @@ function injectButton() {
           }
 
           // If the video duration is less than 5 minutes, skip to the next iteration
-          if (totalMinutes < 5 || totalMinutes > 15) return;
+          if (totalMinutes < 5 || totalMinutes > 30) return;
 
           //Move upwards to find the nearest parent with id="thumbnail" to get video link
           let thumbnail = timeElement.parentElement;
