@@ -229,6 +229,7 @@ function computeWeb() {
     .catch((error) => {
       console.error("Error fetching video data:", error);
     });
+    updateVideoScoreColor();
 }
 
 //======================================================================================================================================================
@@ -275,6 +276,7 @@ function compute(url) {
     .catch((error) => {
       console.error("Error fetching video data:", error);
     });
+    updateVideoScoreColor();
 }
 
 //======================================================================================================================================================
